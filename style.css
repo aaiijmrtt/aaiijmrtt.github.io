@@ -27,6 +27,7 @@ html, body {
 	height: 78%;
 	width: 0;
 	position: absolute;
+	overflow-y: auto;
 	transition: 1s;
 	transition-timing-function: linear;
 	transition-property: width opacity;
@@ -112,19 +113,13 @@ html, body {
 }
 
 #backsection {
-	z-index: 0;
-	text-align: center;
 	height: 100%;
 	width: 100%;
-	transition: .5s;
-	transition-property: opcaity;
 }
 
 #back {
 	height: 100%;
 	width: 100%;
-	transition: .5s;
-	transition-property: src;
 }
 
 #mute {

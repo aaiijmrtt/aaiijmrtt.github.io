@@ -5,6 +5,8 @@
 		<title>Amitrajit Sarkar</title>
 		<link href="style.css" rel="stylesheet" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	</head>
 
 	<body id="body">
@@ -34,8 +36,8 @@
 			</p>
 
 			<p class="centered c0">
-					<img class="icon" src="images/yourehere.png">
-					<a class="link" href="http://aaiijmrtt.github.io">You're Here</a>
+				<img class="icon" src="images/yourehere.png">
+				<a class="link" href="http://aaiijmrtt.github.io">You're Here</a>
 			</p>
 		</div>
 
@@ -47,8 +49,9 @@
 				<span class="c212">POETICALLY</span>
 				<span class="c213">ARTISTICALLY</span>
 				<span class="c214">IMAGINATIVELY</span>
-				<span class="c221">MATHEMATICALLY</span>
-				<span class="c222">DIGITALLY</span>
+				<span class="c215">MATHEMATICALLY</span>
+				<span class="c216">DIGITALLY</span>
+				<span class="c221">NEURAL NETWORKS</span>
 			</h1>
 
 			<span id="leftbutton" class="c2 link">THIS WAY</span>
@@ -59,11 +62,12 @@
 					<p id="l12" class="centered c11 link">POETICALLY</p>
 					<p id="l13" class="centered c11 link">ARTISTICALLY</p>
 					<p id="l14" class="centered c11 link">IMAGINATIVELY</p>
+					<p id="l15" class="centered c11 link">MATHEMATICALLY</p>
+					<p id="l16" class="centered c11 link">DIGITALLY</p>
 			</p>
 
 			<p id="l20" class="centered c12">
-				<p id="l21" class="centered c12 link">MATHEMATICALLY</p>
-				<p id="l22" class="centered c12 link">DIGITALLY</p>
+				<p id="l21" class="centered c12 link">NEURAL NETWORKS</p>
 			</p>
 		</div>
 
@@ -86,8 +90,33 @@
 			<img class="image centered c212" src="images/poetically.jpg">
 			<img class="image centered c213" src="images/artistically.jpg">
 			<img class="image centered c214" src="images/imaginatively.jpg">
-			<img class="image centered c221" src="images/mathematically.jpg">
-			<img class="image centered c222" src="images/digitally.jpg">
+			<img class="image centered c215" src="images/mathematically.jpg">
+			<img class="image centered c216" src="images/digitally.jpg">
+
+			<p class="c221">As far as I know, neural networks are becoming pretty good at a lot of things these days. What are they? In essence, we may think
+of a neural network as a function $f$ controlled by the set of parameters $\theta$ between hyperspaces $\Re^p$ and $\Re^q$, ie. $f_\theta : \Re^p \to \Re^q$.
+But first, let us describe a single neuron, intuitively, following its most common mathematical formulation.</p>
+			<p class="c221">Biologically, a neuron receives impulses from other neurons, is excited by them to an extent, and subsequently generates a response.
+If a neuron receives impulses from $p$ other neurons, its impulse $x$ to response $z$ characteristics may be mathematically modeled as a map $n_w: \Re^p \to
+\Re$. Some neurons excite it more, some less: hence its excitement may be approximated as a weighted mean, ie. $a = \Sigma^{p}_{i = 1} w_i \cdot x_i$. The
+neuron is usually sensitive to a particular range of excitements and its response generally trails off with 'distance' from this range. The response may then
+be considered a nonlinear function of the excitement, ie. $z = \frac{1}{1 + e^{-a}}$. This function $z(a)$ is called the sigmoid.</p>
+			<p class="c221">Now if we stack $q$ of these neurons into a layer, each with their separate set of weights $w \in W$, we obtain a neural layer $l_W:
+\Re^p \to \Re^q$. And if we connect layers by feeding the outputs of one layer to the inputs of the next, we obtain a neural network. It really is that simple.
+But is this artificial construction enough for them to do all the neat things we have heard of? Not nearly. Then, how do they do it? They aren't 'special':
+they too must be trained. There are basically $2$ types of training: supervised and unsupervised. By extension there are $2$ classes of networks, depending on
+how they have been trained. Supervised training is generally used to make function approximators, while unsupervised training is used to make feature
+extractors.</p>
+			<p class="c221">A supervised training set consists of training samples of inputs and expected outputs, and looks like $\{(x_i, y_i) | x_i \in
+\Re^p, y_i \in \Re^q\}_{i = 1}^{n}$. The goal is to have the neural network learn a generalized mapping such that $f_\theta (x_i) \approx y_i \forall i$.
+We choose a set of parameters $\theta^\star$ which minimizes a cost function $|\cdot|$ as $\theta^\star = \underset{\theta}{\text{argmin}}
+\Sigma^{n}_{i = 1}|f_\theta(x_i) - y_i|$. That does not seem too difficult. But the beauty of neural networks is that they can even generate 'sensible' outputs
+even for inputs which were not in the training set: they can generalize, they can 'learn'.</p>
+			<p class="c221">An unsupervised training set, on the other hand, consists only of inputs, and looks like $\{x_i | x_i \in \Re^p\}_{i = 1}^{n}$. The
+goal is far more involved, and the outcome far more intriguing. The network learns a q dimensional representation of the p dimensional data, which can be used
+in place of the original vector, and thought of as a tuple of extracted features. Why is this so brilliant? Because it allows us to construct hierarchical
+abstractions for different forms of data representation, giving rise to some very exciting properties. How is this done? A common method is to define a $2^{nd}$
+reconstruction function $g_\phi : \Re^q \to \Re^p$ to apporximate $g_\phi(f_\theta(x_i)) \approx x_i \forall i$.</p>
 		</div>
 
 		<div id="textsection" class="presenter">
@@ -109,13 +138,16 @@
 			<p class="centered c214">Sometimes I stop in wonder, and wander.</p>
 			<p class="centered c214">To fill the gaps the world left me.</p>
 
-			<h1 class="centered c221">Symbols</h1>
-			<p class="centered c221">I loved her, first.</p>
-			<p class="centered c221">I'm still waiting for her to love me back.</p>
+			<h1 class="centered c215">Symbols</h1>
+			<p class="centered c215">I loved her, first.</p>
+			<p class="centered c215">I'm still waiting for her to love me back.</p>
 
-			<h1 class="centered c222">Logic</h1>
-			<p class="centered c222">This is how people know me.</p>
-			<p class="centered c222">They never paid enough attention anyway.</p>
+			<h1 class="centered c216">Logic</h1>
+			<p class="centered c216">This is how people know me.</p>
+			<p class="centered c216">They never paid enough attention anyway.</p>
+
+			<h1 class="centered c221">Neural Networks</h1>
+			<p class="centered c221">How computers seem to 'think' these days.</p>
 		</div>
 
 		<div id="backsection">
