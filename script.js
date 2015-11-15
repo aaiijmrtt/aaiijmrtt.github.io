@@ -12,6 +12,7 @@ var c214 = document.getElementsByClassName('c214');
 var c215 = document.getElementsByClassName('c215');
 var c216 = document.getElementsByClassName('c216');
 var c221 = document.getElementsByClassName('c221');
+var c222 = document.getElementsByClassName('c222');
 
 function setDisplay(array, value) {
 	for(var i = 0; i < array.length; ++i)
@@ -34,6 +35,8 @@ function clicker() {
 		setDisplay(c215, 'none');
 		setDisplay(c216, 'none');
 		setDisplay(c221, 'none');
+		setDisplay(c222, 'none');
+//		setDisplay(c222, 'none');
 		setDisplay(c1, 'none');
 		setDisplay(c11, 'none');
 		setDisplay(c12, 'none');
@@ -65,6 +68,7 @@ function clicker() {
 		setDisplay(c215, 'none');
 		setDisplay(c216, 'none');
 		setDisplay(c221, 'none');
+		setDisplay(c222, 'none');
 		if(superstate === '1') {
 			if(substate === '1')
 				setDisplay(c211, 'block');
@@ -82,6 +86,8 @@ function clicker() {
 		else if(superstate === '2') {
 			if(substate === '1')
 				setDisplay(c221, 'block');
+			else if(substate === '2')
+				setDisplay(c222, 'block');
 		}
 		setDisplay(c2, 'block');
 	}
@@ -147,12 +153,18 @@ document.getElementById('l21').onclick = function() {
 	clicker();
 }
 
+document.getElementById('l22').onclick = function() {
+	localStorage.setItem('superstate', 2);
+	localStorage.setItem('substate', 2);
+	clicker();
+}
+
 document.getElementById('upbutton').onclick = function() {
 	localStorage.setItem('substate', 0);
 	clicker();
 }
 
-var lengths = [6, 1];
+var lengths = [6, 2];
 
 document.getElementById('leftbutton').onclick = function() {
 	substate = localStorage.getItem('substate');
