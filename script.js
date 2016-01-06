@@ -14,6 +14,10 @@ var c216 = document.getElementsByClassName('c216');
 var c221 = document.getElementsByClassName('c221');
 var c222 = document.getElementsByClassName('c222');
 var c223 = document.getElementsByClassName('c223');
+var c224 = document.getElementsByClassName('c224');
+var c225 = document.getElementsByClassName('c225');
+var c226 = document.getElementsByClassName('c226');
+var c227 = document.getElementsByClassName('c227');
 
 function setDisplay(array, value) {
 	for(var i = 0; i < array.length; ++i)
@@ -38,6 +42,10 @@ function clicker() {
 		setDisplay(c221, 'none');
 		setDisplay(c222, 'none');
 		setDisplay(c223, 'none');
+		setDisplay(c224, 'none');
+		setDisplay(c225, 'none');
+		setDisplay(c226, 'none');
+		setDisplay(c227, 'none');
 		setDisplay(c1, 'none');
 		setDisplay(c11, 'none');
 		setDisplay(c12, 'none');
@@ -71,6 +79,10 @@ function clicker() {
 		setDisplay(c221, 'none');
 		setDisplay(c222, 'none');
 		setDisplay(c223, 'none');
+		setDisplay(c224, 'none');
+		setDisplay(c225, 'none');
+		setDisplay(c226, 'none');
+		setDisplay(c227, 'none');
 		if(superstate === '1') {
 			if(substate === '1')
 				setDisplay(c211, 'block');
@@ -92,6 +104,14 @@ function clicker() {
 				setDisplay(c222, 'block');
 			else if(substate === '3')
 				setDisplay(c223, 'block');
+			else if(substate === '4')
+				setDisplay(c224, 'block');
+			else if(substate === '5')
+				setDisplay(c225, 'block');
+			else if(substate === '6')
+				setDisplay(c226, 'block');
+			else if(substate === '7')
+				setDisplay(c227, 'block');
 		}
 		setDisplay(c2, 'block');
 	}
@@ -169,12 +189,36 @@ document.getElementById('l23').onclick = function() {
 	clicker();
 }
 
+document.getElementById('l24').onclick = function() {
+	localStorage.setItem('superstate', 2);
+	localStorage.setItem('substate', 4);
+	clicker();
+}
+
+document.getElementById('l25').onclick = function() {
+	localStorage.setItem('superstate', 2);
+	localStorage.setItem('substate', 5);
+	clicker();
+}
+
+document.getElementById('l26').onclick = function() {
+	localStorage.setItem('superstate', 2);
+	localStorage.setItem('substate', 6);
+	clicker();
+}
+
+document.getElementById('l27').onclick = function() {
+	localStorage.setItem('superstate', 2);
+	localStorage.setItem('substate', 7);
+	clicker();
+}
+
 document.getElementById('upbutton').onclick = function() {
 	localStorage.setItem('substate', 0);
 	clicker();
 }
 
-var lengths = [6, 3];
+var lengths = [6, 7];
 
 document.getElementById('leftbutton').onclick = function() {
 	substate = localStorage.getItem('substate');

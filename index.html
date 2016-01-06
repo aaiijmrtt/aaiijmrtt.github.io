@@ -51,9 +51,13 @@
 				<span class="c214">IMAGINATIVELY</span>
 				<span class="c215">MATHEMATICALLY</span>
 				<span class="c216">DIGITALLY</span>
-				<span class="c221">NEURAL NETWORKS</span>
-				<span class="c222">GRADIENT DESCENT</span>
-				<span class="c223">WORD VECTORS</span>
+				<span class="c221">CHESS ENGINES</span>
+				<span class="c222">MINIMAX</span>
+				<span class="c223">$\alpha \beta$ PRUNING</span>
+				<span class="c224">NEURAL NETWORKS</span>
+				<span class="c225">GRADIENT DESCENT</span>
+				<span class="c226">BACKPROPAGATION</span>
+				<span class="c227">WORD VECTORS</span>
 			</h1>
 
 			<span id="leftbutton" class="c2 link">THIS WAY</span>
@@ -69,9 +73,13 @@
 			</p>
 
 			<p id="l20" class="centered c12">
-				<p id="l21" class="centered c12 link">NEURAL NETWORKS</p>
-				<p id="l22" class="centered c12 link">GRADIENT DESCENT</p>
-				<p id="l23" class="centered c12 link">WORD VECTORS</p>
+				<p id="l21" class="centered c12 link">CHESS ENGINES</p>
+				<p id="l22" class="centered c12 link">MINIMAX</p>
+				<p id="l23" class="centered c12 link">$\alpha \beta$ PRUNING</p>
+				<p id="l24" class="centered c12 link">NEURAL NETWORKS</p>
+				<p id="l25" class="centered c12 link">GRADIENT DESCENT</p>
+				<p id="l26" class="centered c12 link">BACKPROPAGATION</p>
+				<p id="l27" class="centered c12 link">WORD VECTORS</p>
 			</p>
 		</div>
 
@@ -97,7 +105,7 @@
 			<img class="image centered c215" src="images/mathematically.jpg">
 			<img class="image centered c216" src="images/digitally.jpg">
 
-			<div class="c221">
+			<div class="c224">
 				<p>
 As far as I know, neural networks are becoming pretty good at a lot of things these days. What are they? In essence, we may think of a neural network as a
 function $f$ controlled by the set of parameters $\theta$ between hyperspaces $\Re^p$ and $\Re^q$, ie. $f_\theta : \Re^p \to \Re^q$. But first, let us describe
@@ -140,7 +148,7 @@ values for all input vectors and hence its range looks like $\Re^q$.
 				</p>
 			</div>
 
-			<div class="c222">
+			<div class="c225">
 				<p>
 As far as I know, neural networks must be systematically trained before they can do anything at all. How? The secret behind their success is gradient descent.
 The simplest explanation of gradient descent is that if we were trying to change the parameters to minimize the cost function, we would want to move the
@@ -166,9 +174,9 @@ $(\beta^t)^2 = \mu(\beta^{t - 1})^2 + (1 - \mu) \cdot (\delta^t)^2 $ for root me
 				<p>
 If we took a step in a direction that looked good, would our confidence grow and would we be encouraged to take longer steps? Similarly, if we took a step in
 the direction that didn't look promising, wouldn't our confidence shrink? This idea is captured by the steps $\alpha \cdot \gamma^t \odot \delta^t$, where
-$\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \delta^{t - 1}_{i} > 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot
-\delta^{t - 1}_{i} < 0\\ \gamma^{t - 1}_i, & otherwise \\ \end{cases}$ for adaptive gain, $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i \cdot (1 + \Delta), &
-\delta^t_{i} \cdot \delta^{t - 1}_{i} > 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot \delta^{t - 1}_{i} < 0\\ \gamma^{t - 1}_i, & otherwise\\
+$\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot
+\delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise \\ \end{cases}$ for adaptive gain, $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i \cdot (1 + \Delta), &
+\delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot \delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise\\
 \end{cases}$ for bar delta bar. Resilient propagation goes as far as to take steps solely based on confidence, without worrying about how steep the terrain is:
 it steps as $\alpha \cdot \gamma^t \odot sgn(\delta^t)$.
 				</p>
@@ -178,7 +186,7 @@ thought is captured by the concept of momentum, which replaces the steps by a sp
 - 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$.
 				</p>
 				<p>
-What about the terrain in the first place? Where did it come from? Can it be sculpted or moulded? The answer to that lies in the nature of the network, the
+What about the terrain in the first place? Where did it come from? Can it be sculpted or moulded? The answer lies in the nature of the network, the
 cost function, and their interaction with the dataset. A few of the common cost functions $|f_{\theta}(x), y|$ are the mean squared $(f_{\theta}(x)  - y) \cdot
 (f_{\theta}(x)  - y)$, the cross entropy $-(y \cdot \ln(f_{\theta}(x)) + (1 - y) \cdot \ln(1 - f_{\theta}(x)))$, the negative log likelihood $-y \cdot \ln(
 f_{\theta}(x))$, the divergence $y \cdot (\ln(y) - \ln(f_{\theta}(x)))$ and the cosine distance $\frac{f_{\theta}(x)}{|f_{\theta}(x)|} \cdot \frac{y}{|y|}$.
@@ -190,7 +198,43 @@ performing stochastic gradient descent on the cost $|f_\theta(x_i), y_i|$. Anyth
 				</p>
 			</div>
 
-			<div class="c223">
+			<div class="c226">
+				<p>
+As far as I know, gradient descent is an abstract mathematical concept. And you cannot simply ask a computer to understand and apply an abstract mathematical
+concept - even humans have trouble, sometimes - at least, not yet. Explicitly coding a means to calculate the derivatives for each of the parameters is far too
+tedious to even consider, because there tends to be several million, if not billion of them. How then, is it done? The answer lies in backpropagation.
+				</p>
+				<p>
+Deconstructing the structure of neural networks, we would find a collection of layers. These layers are mostly independent of each other. The sequential nature
+of the arrangement between layers, with the outputs of one being fed into the inputs of the next, is the only link between them. The forward pass applies the
+map of each of the layers sequentially to the input. It would be convenient to define a similar backward pass for gradient descent. The idea is to feed the
+gradients backwards through the layers, in the reverse order, to propagate the derivative of the cost funciton, and calculate the derivatives with respect to
+the parameters in each of the layers from it. How would such an idea be realized?
+				</p>
+				<p>
+Deconstructing the functional expression of neural networks, we would find the mapping, $f_\theta$, of the $n$-layer network collectively to simply be the
+composition, $f_{\theta_n}^{(n)} \circ f_{\theta_{n - 1}}^{(n - 1)} \dots f_{\theta_2}^{(2)} \circ f_{\theta_1}^{(1)}$, of the mappings of the individual
+layers, $f_{\theta_i}^{(i)}$. The output is fed into a cost function, $|f_\theta|$. Subsequently, all its gradients, $\frac{\partial |f_\theta|}{\partial
+\theta_i}$, are calculated, and all the parameters, $\theta_i$, updated.
+				</p>
+				<p>
+Backpropagation is in essence an intelligent application of the chain rule for partial derivatives. For a map from a system of $p$ independent variables $x_n
+\in \Re^p$ to another system of $q$ independent variables $x_{n + 1} \in \Re^q$, the Jacobian matrix $\frac{\partial (x_{n + 1}^{(1)} \dots x_{n + 1}^{(q)})}
+{\partial (x_n^{(1)} \dots x_n^{(p)})}$ is defined as $\mathbb{J}_{i, j} = \frac{\partial x_{n + 1}^{(i)}}{\partial x_n^{(j)}}$. To convert the partial
+derivatives of a function, $f$, with respect to the system $x_{n + 1}$ into the those with respect to the system $x_n$, we use the Jacobian as $\frac{\partial
+f}{\partial x_n} = \frac{\partial (x_{n + 1}^{(1)} \dots x_{n + 1}^{(q)})}{\partial (x_n^{(1)} \dots x_n^{(p)})}^T \cdot \frac{\partial f}{\partial x_{n + 1}}$.
+				</p>
+				<p>
+Each layer, $l_i$, in a neural network defines a new system of independent variables, $x_{i + 1}$ as its output. For an $n$-layer network as a whole, $x_1$ is
+its input and $x_{n + 1}$ is its output. This definition implies that $x_{i + 1}$ is a function of $x_i$ and $\theta_i$, and them alone. If $l_i$ feeds forward
+$\overrightarrow{f_{\theta_i}^{(i)}}: \begin{cases} & \Re^p \to \Re^q \\ & x_i \mapsto x_{i + 1} \end{cases}$, it backpropagates $\overleftarrow{f_{\theta_i}
+^{(i)}}: \begin{cases} & \Re^q \to \Re^p \\ & \frac{\partial |f_\theta|}{\partial x_{i + 1}} \mapsto \frac{\partial |f_\theta|}{\partial x_i}\end{cases}$.
+Hence, $l_i$, provided $\frac{\partial |f_\theta|}{\partial x_{i + 1}}$ by backpropagation, can calculate both $\frac{\partial |f_\theta|}{\partial x_i}$,
+necessary for further backpropagation, and $\frac{\partial |f_\theta|}{\partial \theta_i}$, necessary for parameter updates, by the chain rule.
+				</p>
+			</div>
+
+			<div class="c227">
 				<p>
 As far as I know, neural networks cannot inherently understand humanspeak. Words need to be represented in a form that computers can interpret. The challenge
 lies in that fact that alphabetically speaking, words which look starkly dissimilar may be identical in meaning, while words which look alike may mean
@@ -210,31 +254,31 @@ Deeper, in terms of neural network layers. Denser, in terms of the size of the v
 the representations begin to look more like $v \in \Re^m$ with $m \ll |V|$. That being the destination, but how do we get there? We would like to ensure that
 these have some 'sense' embedded within them. We adopt the policy of recognizing a word by the company it usually keeps. We can divide models for them in
 broadly two categories: the continuous bag of words and the skip gram models. The good news is that these models can be trained over large corpuses, completely
-unsupervised. A peculiarity of the neural networks used to generate both these models is that the hidden, intermediate layer does not contain a nonlinear
-activation function. All $3$ layers are fully connected, but strictly linear. These models give rise to some neat properties of their word vectors, too. For
-example, once you are done training, you might discover that $v_{queen} \approx v_{king} - v_{man} + v_{woman}$. Indeed, it is a matter of no mere coincidence,
-for such additive patterns generalize to several words.
+unsupervised. A peculiarity of the neural networks used to generate both these models is that the connections from the input to the hidden, intermediate vector
+does not contain a nonlinear activation function. Both layers are fully connected, but strictly linear. These models give rise to some neat properties of their
+word vectors, too. For example, once you are done training, you might discover that $v_{queen} \approx v_{king} - v_{man} + v_{woman}$. Indeed, it is a matter
+of no mere coincidence, for such additive patterns generalize to several words.
 				</p>
 				<p>
 The intuition between the continuous bag of words model is to use the context in which a word is found to predict a probability distribution of itself. So we
-construct a neural network where the input layer is the mean of the one-hot encodings of words in the context, the intermediate layer given the dense neural
-word embedding, and the outer layer is softmaxed to generate the probability distribution of the word itself. This output is optimized with respect to a cost
+construct a neural network where the input vector is the mean of the one-hot encodings of words in the context, the intermediate vector gives the dense neural
+word embedding, and the outer vector is softmaxed to generate the probability distribution of the word itself. This output is optimized with respect to a cost
 function, generally the negative log likelihood, against the one-hot encoding of the centre word itself.
 				</p>
 				<p>
 The intuition between the skip gram model is to use the centre word to predict a probability distribution over the context in which it is found. Though the
-neural network construction is nearly identical, its input and output are in a sense reversed. Instead of taken the mean of the context in the input layer and
-optimizing the cost function against the one-hot encoding of the centre word, we take the one-hot encoding of the centre word in the input layer and optimize
-the cost function against the mean of the context.
+neural network construction is nearly identical, its input and output are in a sense reversed. Instead of taken the mean of the context as the input vector and
+optimizing the cost function against the one-hot encoding of the centre word, we take the one-hot encoding of the centre word as the input vector and optimize
+against the mean of the context.
 				</p>
 				<p>
 How do we capture these intuitions mathematically? The number of words, $C$, included in the context on either side of the centre word is called the size of
-the context window. Say the centre word is $w^{(i)}$, and the context words are $w^{(j)}, \forall j \in \mathbb{Z} | 0 < |j| <= C$. If $W_I$ and $W_O$ be the
-input and output layer weights, respectively, and $v_I \in W_I$ and $v_O \in W_O$ be a column and row in these matrices, then the optimization of the continuous
-bag of words model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\log\frac{\exp{({v_O^{(i)}}^T \frac{1}{2C} \displaystyle\sum_{\substack{j = -C \\ j \neq 0}
-}^{C} v_I^{(j)})}}{\displaystyle\sum_{k = 1}^{|V|}\exp({{v_O^{(i)}}^T v_I^{(k)}})}$, while that for the skip gram model looks like $\underset{W_{I}, W_{O}}{
-\text{min}} -\frac{1}{2C}\displaystyle\sum_{\substack{j = -C \\ j \neq 0}}^{C}\log\frac{\exp{({v_O^{(j)}}^T v_I^{(i)})}}{\displaystyle\sum_{k = 1}^{|V|}\exp({{
-v_O^{(k)}}^T v_I^{(i)}})}$
+the context window. Say the centre word is $w^{(i)}$, and the context words are $w^{(j)}, \forall j \in \mathbb{Z} | |j| \in \mathbb{N}_{\leq C}$. If $W_I$ and
+$W_O$ be the input and output layer weights respectively, and $v_I \in W_I$ and $v_O \in W_O$ be a column and row in these matrices, then the optimization of
+the continuous bag of words model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\log\frac{\exp{({v_O^{(i)}}^T \frac{1}{2C} \Sigma_j v_I^{(j)})}}{\Sigma_k
+\exp({{v_O^{(i)}}^T v_I^{(k)}})}$, while that for the skip gram model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\frac{1}{2C}\Sigma_j\log\frac{\exp{({v_O
+^{(j)}}^T v_I^{(i)})}}{\Sigma_k\exp({{v_O^{(k)}}^T v_I^{(i)}})}$ where $\Sigma_j$ sums over the context $\displaystyle\sum_{\substack{j = -C \\ j \neq 0}}^{C}$
+and $\Sigma_k$ sums over the vocabulary $\displaystyle\sum_{k = 1}^{|V|}$. The optimization is then carried out for every word in the corpus.
 				</p>
 			</div>
 		</div>
@@ -266,14 +310,26 @@ v_O^{(k)}}^T v_I^{(i)}})}$
 			<p class="centered c216">This is how people know me.</p>
 			<p class="centered c216">They never paid enough attention anyway.</p>
 
-			<h1 class="centered c221">Neural Networks</h1>
-			<p class="centered c221">How computers seem to 'think' these days.</p>
+			<h1 class="centered c221">Chess Engines</h1>
+			<p class="centered c221">How computers seem to 'play games' these days.</p>
 
-			<h1 class="centered c222">Gradient Descent</h1>
-			<p class="centered c222">How computers seem to 'learn' these days.</p>
+			<h1 class="centered c222">Minimax</h1>
+			<p class="centered c222">How computers seem to 'search for moves' these days.</p>
 
-			<h1 class="centered c223">Word Vectors</h1>
-			<p class="centered c223">How computers seem to 'read' these days.</p>
+			<h1 class="centered c223">$\alpha \beta$ Pruning</h1>
+			<p class="centered c223">How computers seem to 'win games' these days.</p>
+
+			<h1 class="centered c224">Neural Networks</h1>
+			<p class="centered c224">How computers seem to 'think' these days.</p>
+
+			<h1 class="centered c225">Gradient Descent</h1>
+			<p class="centered c225">How computers seem to 'learn' these days.</p>
+
+			<h1 class="centered c226">Backpropagation</h1>
+			<p class="centered c226">How computers seem to 'learn' these days: behind the scenes.</p>
+
+			<h1 class="centered c227">Word Vectors</h1>
+			<p class="centered c227">How computers seem to 'read' these days.</p>
 		</div>
 
 		<div id="backsection">
