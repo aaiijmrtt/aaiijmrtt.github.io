@@ -258,6 +258,84 @@ captures with only the least valuable piece at every point.
 				</code>
 			</div>
 
+			<div class="c223">
+				<p>
+As far as I know, the search space for all possible chess positions is far too large for a computer to process exhaustively. Processing the search space
+completely up to a specific depth in the future is wasteful too, because even from an early stage it is possible to exclude certain moves as blasphemous. It is
+a better idea to search deeply along the lines of moves which seem more promising to begin with. If at any point in the search, we realize that our present
+line of search allows the opponent a greater advantage than the best line of play explored by us thus far, we may safely abandon that line without wasting
+further time in reckoning its alternative outcomes. This is called pruning the tree. Using lower and upper bounds, $\alpha$ and $\beta$, obtained from
+searching prior moves, to limit the extent of the search brings us to the $\alpha \beta$ Pruning Alogrithm for MiniMax.
+				</p>
+				<code>
+<pre>function alphabetaminimax(node, depth, α, β, maximizingPlayer)
+	if depth = 0 or node is a terminal node
+		return the heuristic value of node
+	if maximizingPlayer
+		best ← -∞
+		for each child of node
+			value ← alphabetaminimax(child, depth - 1, α, β, FALSE)
+			best ← max(best, value)
+			α ← max(α, value)
+			if β ≤ α
+				break /* β cut-off */
+		return best /* fail soft */
+	else
+		best ← ∞
+		for each child of node
+			value ← alphabetaminimax(child, depth - 1, α, β, TRUE)
+			best ← min(best, value)
+			β ← min(β, value)
+			if β ≤ α
+				break /* α cut-off */
+		return best /* fail soft */</pre>
+				</code>
+				<p>
+Similarly, the $\alpha \beta$ Pruning Algorithm may be adapted for NegaMax.
+				</p>
+				<code>
+<pre>function alphabetanegamax(node, depth, α, β, color)
+	if depth = 0 or node is a terminal node
+		return color * the heuristic value of node
+	best ← -∞
+	for each child of node
+		value ← -alphabetanegamax(child, depth - 1, -β, -α, -color)
+		best ← max(best, value)
+		α ← max(α, value)
+		if β ≤ α
+			break /* beta cut-off */
+	return best /* fail soft */</pre>
+				</code>
+				<p>
+Of course, simply because the algorithm is capable of discarding moves which seem blunderous compared to the options already explored, does not mean that it is
+able to prune away all errors beforehand. Some moves are not a bad idea until explored to a much greater depth, and cannot be discarded early. Moreover, if we
+begin by checking moves in descending order of stupidity, then every new move explored will show an improvement, and we shall end up checking all the moves
+anyway. Move ordering plays a crucial role in determining whether the algorithms offer any advantage at all over the unpruned varieties. This ordering may be
+obtained by using a suitable heuristic, or, in an iteratively deepening framework, derived from the scores obtained when evaluated to a shallower depth.
+				</p>
+				<p>
+The Principal Variation Search Algorithm uses an avaiable move ordering to aggressively search smaller $(\alpha, \beta)$ windows. At every game state, it
+assumes that the first move in the ordering will yield the best results. Once it obtains this value, it searches the remaining moves with a null window, to
+expedite cutoffs. If it is mistaken, and a move improves on the first move, then it will research the corresponding subtree using the full window.
+				</p>
+				<code>
+<pre>function principalvariation(node, depth, α, β, color)
+	if depth = 0 or node is a terminal node
+		return color × the heuristic value of node
+	for each child of node
+		if child is not first child
+			score ← -principalvariation(child, depth - 1, -α - 1, -α, -color) /* null window search */
+			if α < score < β /* fail high */
+				score ← -principalvariation(child, depth - 1, -β, -score, -color) /* full window search */
+		else
+			score ← -principalvariation(child, depth - 1, -β, -α, -color)
+		α ← max(α, score)
+		if β ≤ α
+			break /* beta cut-off */
+	return α</pre>
+				</code>
+			</div>
+
 			<div class="c224">
 				<p>
 As far as I know, neural networks are becoming pretty good at a lot of things these days. What are they? In essence, we may think of a neural network as a
