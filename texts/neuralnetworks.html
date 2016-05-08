@@ -1,0 +1,45 @@
+<p>
+As far as I know, neural networks are becoming pretty good at a lot of things these days. What are they? In essence, we may think of a neural network as a
+function $f$ controlled by the set of parameters $\theta$ between hyperspaces $\Re^p$ and $\Re^q$, ie. $f_\theta : \Re^p \to \Re^q$. But first, let us describe
+a single neuron, intuitively, following its most common mathematical formulation.
+</p>
+
+<p>
+Biologically, a neuron receives impulses from other neurons, is excited by them to an extent, and subsequently generates a response. If a neuron receives
+impulses from $p$ other neurons, its impulse $x$ to response $z$ characteristics may be mathematically modeled as a map $n_w: \Re^p \to \Re$. Some neurons
+excite it more, some less: hence its excitement may be approximated as a weighted mean, ie. $\bar{a} = \Sigma^{p}_{i = 1} w_i \cdot x_i$. The neuron is usually
+sensitive to a particular range of excitements and its response generally trails off with 'distance' from this range. We may fix the center of this range by
+adding a bias to the excitement, ie. $a = \Sigma^{p}_{i = 1} w_i \cdot x_i + b$. The response may then be considered a nonlinear function of the excitement,
+ie. $z = \frac{1}{1 + e^{-a}}$. This function $z(a)$ is called the sigmoid.
+</p>
+
+<p>
+Now if we stack $q$ of these neurons into a layer, each with their separate set of weights $w \in W$, we obtain a neural layer $l_W: \Re^p \to \Re^q$. And if
+we connect layers by feeding the outputs of one layer to the inputs of the next, we obtain a neural network. It really is that simple. But is this artificial
+construction enough for them to do all the neat things we have heard of? Not nearly. Then, how do they do it? They aren't 'special': they too must be trained.
+There are basically $2$ types of training: supervised and unsupervised. By extension there are $2$ classes of networks, depending on how they have been
+trained. Supervised training is generally used to make function approximators, while unsupervised training is used to make feature extractors.
+</p>
+
+<p>
+A supervised training set consists of training samples of inputs and expected outputs, and looks like $\{(x_i, y_i) | x_i \in \Re^p, y_i \in \Re^q\}_{i =
+1}^{n}$. The goal is to have the neural network learn a generalized mapping such that $f_\theta (x_i) \approx y_i \forall i$. We choose a set of parameters
+$\theta^\star$ which minimizes a cost function $||: \Re^q \times \Re^q \to \Re$ as $\theta^\star = \underset{\theta}{\text{argmin}} \Sigma^{n}_{i = 1}|
+f_\theta(x_i), y_i|$. That does not seem too difficult. But the beauty of neural networks is that they can even generate 'sensible' outputs even for inputs
+which were not in the training set: they can generalize, they can 'learn'.
+</p>
+
+<p>
+An unsupervised training set, on the other hand, consists only of inputs, and looks like $\{x_i | x_i \in \Re^p\}_{i = 1}^{n}$. The goal is far more involved,
+and the outcome far more intriguing. The network learns a q dimensional representation of the p dimensional data, which can be used in place of the original
+vector, and thought of as a tuple of extracted features. Why is this so brilliant? Because it allows us to construct hierarchical abstractions for different
+forms of data representation, giving rise to some very exciting properties. How is this done? A common method is to define a $2^{nd}$ reconstruction function
+$g_\phi : \Re^q \to \Re^p$ to apporximate $g_\phi(f_\theta(x_i)) \approx x_i \forall i$.
+</p>
+
+<p>
+Once trained, what can a network do? In general, it is expected to do $1$ of $2$ things: classification or regression. By extension, there are $2$ classes of
+neural networks depending on what they do. While classifying, the network attempts to label input vectors into $1$ or more of $q$ discrete classes and hence
+its range looks like $\{0, 1\}^q$ in binary or $\{-1, 1\}^q$ in bipolar vectors. While regressing, the network attempts to produce continuous intermediate
+values for all input vectors and hence its range looks like $\Re^q$.
+</p>

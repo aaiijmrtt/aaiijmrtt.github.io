@@ -45,6 +45,11 @@
 			<h1 class="centered c1 c2">
 				<span class="c11">PERSONALLY</span>
 				<span class="c12">PROFESSIONALLY</span>
+
+				<span class="c13">CHESS ENGINES</span>
+				<span class="c14">NEURAL NETWORKS</span>
+				<span class="c15">DEEP LEARNING</span>
+
 				<span class="c211">MUSICALLY</span>
 				<span class="c212">POETICALLY</span>
 				<span class="c213">ARTISTICALLY</span>
@@ -63,23 +68,35 @@
 			<span id="leftbutton" class="c2 link">THIS WAY</span>
 			<span id="rightbutton" class="c2 link">THAT WAY</span>
 
-			<p id="l10" class="centered c11">
-					<p id="l11" class="centered c11 link">MUSICALLY</p>
-					<p id="l12" class="centered c11 link">POETICALLY</p>
-					<p id="l13" class="centered c11 link">ARTISTICALLY</p>
-					<p id="l14" class="centered c11 link">IMAGINATIVELY</p>
-					<p id="l15" class="centered c11 link">MATHEMATICALLY</p>
-					<p id="l16" class="centered c11 link">DIGITALLY</p>
+			<p class="centered c11">
+				<p id="l11" class="centered c11 link">MUSICALLY</p>
+				<p id="l12" class="centered c11 link">POETICALLY</p>
+				<p id="l13" class="centered c11 link">ARTISTICALLY</p>
+				<p id="l14" class="centered c11 link">IMAGINATIVELY</p>
+				<p id="l15" class="centered c11 link">MATHEMATICALLY</p>
+				<p id="l16" class="centered c11 link">DIGITALLY</p>
 			</p>
 
-			<p id="l20" class="centered c12">
-				<p id="l21" class="centered c12 link">CHESS ENGINES</p>
-				<p id="l22" class="centered c12 link">MINIMAX</p>
-				<p id="l23" class="centered c12 link">$\alpha \beta$ PRUNING</p>
-				<p id="l24" class="centered c12 link">NEURAL NETWORKS</p>
-				<p id="l25" class="centered c12 link">GRADIENT DESCENT</p>
-				<p id="l26" class="centered c12 link">BACKPROPAGATION</p>
-				<p id="l27" class="centered c12 link">WORD VECTORS</p>
+			<p class="centered c12">
+				<p id="l30" class="centered c12 link">CHESS ENGINES</p>
+				<p id="l40" class="centered c12 link">NEURAL NETWORKS</p>
+				<p id="l50" class="centered c12 link">DEEP LEARNING</p>
+			</p>
+
+			<p class="centered c13">
+				<p id="l21" class="centered c13 link">CHESS ENGINES</p>
+				<p id="l22" class="centered c13 link">MINIMAX</p>
+				<p id="l23" class="centered c13 link">$\alpha \beta$ PRUNING</p>
+			</p>
+
+			<p class="centered c14">
+				<p id="l24" class="centered c14 link">NEURAL NETWORKS</p>
+				<p id="l25" class="centered c14 link">GRADIENT DESCENT</p>
+				<p id="l26" class="centered c14 link">BACKPROPAGATION</p>
+			</p>
+
+			<p class="centered c15">
+				<p id="l27" class="centered c15 link">WORD VECTORS</p>
 			</p>
 		</div>
 
@@ -92,8 +109,8 @@
 			</h1>
 
 			<p id="l0" class="centered c0">
-				<p id="l1" class="centered c0 link">PERSONALLY</p>
-				<p id="l2" class="centered c0 link">PROFESSIONALLY</p>
+				<p id="l10" class="centered c0 link">PERSONALLY</p>
+				<p id="l20" class="centered c0 link">PROFESSIONALLY</p>
 			</p>
 		</div>
 
@@ -105,413 +122,13 @@
 			<img class="image centered c215" src="images/mathematically.jpg">
 			<img class="image centered c216" src="images/digitally.jpg">
 
-			<div class="c221">
-				<p>
-As far as I know, computers are ridiculously good at playing chess these days. They have consistently exhibited superhuman performance. Modern day computer
-chess programs are, humanly speaking, mostly unbeatable. But this is not to suggest that we are any closer to a machine revolution. Computers are still very
-far from achieving the general intelligence displayed by humans. How then did they get so good at this specific task? We outline the secrets to their success,
-one development at a time.
-				</p>
-				<p>
-The design of a chess engine requires the consideration of several aspects. The most fundamental design decisions are related to the representation of boards
-and piece positions, the generation of valid moves, move encoding and update, evaluation of a board state, search for an optimal sequence of moves while
-considering the best opponent's countermoves. While adversarial search can be characterized by abstract algorithms, the others are necessarily implementation
-specific. You have been warned.
-				</p>
-				<p>
-Every chess engine maintains an internal board representation to keep track of the positions of pieces. This representation may be piece centric, keeping track
-of the squares on which given pieces are, or square centric, keeping track of the pieces on given squares. One of the most efficient representations uses
-bitboards. A bitboard representes the $64$ squares of a chessboard in a $64$ bit word, $1$ bit per square, in row major or column major order. The engine
-maintains an array of such bitboards, $1$ for each piece type of each colour, or $1$ for each piece type and $1$ for each colour. We consider the $2^{nd}$
-representation.
-				</p>
-				<p>
-Bitboards are popular for their space efficiency, as well as for their speed in move generation using bitwise operations. For example, white knights are at
-				</p>
-				<code>
-<pre>whiteKnights = bitboards[WHITE] & bitboards[KNIGHT];</pre>
-				</code>
-				<p>
-For non-sliding pieces, ie. for pawns, knights and kings, it is convenient to maintain a lookup table by piece and square in the form of a $2$ dimensional
-array. For example, moves for the white knight at a position are
-				</p>
-				<code>
-<pre>knightMoves = moves[KNIGHT][position];</pre>
-				</code>
-				<p>
-Further checks are required for pieces at the edges of the board. Similarly, black pieces attacked, white pieces defended, and empty squares scouted by the
-white knight are, respectively,
-				</p>
-				<code>
-<pre>whiteKnightAttacks = moves[KNIGHT][position] & bitboards[BLACK];
-whiteKnightDefends = moves[KNIGHT][position] & bitboards[WHITE];
-whiteKnightScouts = moves[KNIGHT][position] & ~(bitboards[WHITE] | bitboards[BLACK]);</pre>
-				</code>
-				<p>
-Generating moves for sliding pieces, ie. for bishops, rooks and queens, is slightly more challenging. A variety of bitboard fill algorithms may be used. The
-simplest is to smear the position of the piece, using bitwise OR operations, outwards, using bitwise SHIFT operations, while maintain direction along rays,
-using bitwise AND operations with move bitmasks. For example, possible rook moves are
-				</p>
-				<code>
-<pre>uint64_t rookMoves(uint8_t position) {
-	uint64_t rooksMoves = bitposition[position];
-	uint64_t freeSquares = ~(bitboards[WHITE] | bitboards[BLACK]);
-	for(uint8_t i = 0; i &lt 7; ++i) {
-		rooksMoves |= (rooksMoves &lt&lt 1) | (rooksMoves &gt&gt 1);
-		rooksMoves &= moves[ROOK][position];
-		rooksMoves |= (rooksMoves &lt&lt 8) | (rooksMoves &gt&gt 8);
-		rooksMoves &= moves[ROOK][position];
-		rooksMoves &= freeSquares;
-	}
-	return rooksMoves;
-}</pre>
-				</code>
-				<p>
-Keeping track of batteries and discovered attacks is even more exciting. They can be obtained by bit twiddling the code which resets to free squares at the end
-of the loop. Once the bitboard of moves is obtained, each of the squares moved to may be examined by popping the least significant $1$ bit. A similar strategy
-is employed for counting the number of pieces of a type in each side, which is used extensively in static game state evaluation. For computers using $2$s
-complement arithmetic, this is as simple as
-				</p>
-				<code>
-<pre>while(bitboard) {
-	leastSignificant1Bit = bitboard & ~(bitboard - 1);
-	bitboard &= bitboard - 1;
-}</pre>
-				</code>
-				<p>
-Further checks are required to generate valid moves under check, and to account for special moves, ie. castling and en passant. Once the moves are generated,
-they must be encoded, and the game state must be unambiguously updated every time this encoding is applied. It is sensible to create an encoding which is both
-compact as well as efficient in use. The various bit groups of the encoding should contain the piece movement and game state update information, which should
-preferably be applicable using XOR operations, possibly after minimal decoding using lookup tables. This is computationally inexpensive, and allows the same
-encoding to be reversibly applied twice to restore the initial state of the board.
-				</p>
-			</div>
-
-			<div class="c222">
-				<p>
-As far as I know, simply being able to generate legal moves does not allow us to win a game of chess - unless it is played against a random-move-generator-like
-monkey. The trick is to find the best move. But in this case the definition of best, if there is one, is highly ambiguous, especially given that a move that
-looks good in a position may turn out to be somewhat less than impressive in the future. For $2$-player, deterministic games, ie. for games in which nothing is
-left to chance, our best move is only as good as our opponent's best response will allow it to be. This philosophy is at the heart of the Minimax algorithm.
-				</p>
-				<code>
-<pre>function minimax(node, depth, maximizingPlayer)
-	if depth = 0 or node is a terminal node
-		return the heuristic value of node
-	if maximizingPlayer
-		best ← -∞
-		for each child of node
-			value ← minimax(child, depth - 1, FALSE)
-			best ← max(best, value)
-		return best
-	else
-		best ← ∞
-		for each child of node
-			value ← minimax(child, depth - 1, TRUE)
-			best ← min(best, value)
-		return best</pre>
-				</code>
-				<p>
-The two players are modeled as having two antagonistic objectives. One attempts to generate moves to maximize the utility score of the game state, while the
-other attempts to generate moves to minimize the same. When it is not possible to come up with a perfectly rational untility function, a suitable heuristic is
-used. In chess, the simplest such is to use a weighted sum of the number of pieces of one side, and subtract from it the same for the pieces of the other side.
-This works quite well in practice. Classically, knights, bishops, rooks, and queens are worth $3^-$, $3^+$, $5$ and $9$ pawns, respectively. The king is, quite
-obviously, invaluable.
-				</p>
-				<p>
-Other factors such as piece mobility, piece connectivity, board control, piece formations (batteries, doubled pawns, isolated pawns, backward pawns, passed
-pawns), trapped pieces, king safety (pawn shield, king tropism), tempo, etc. tempered by the phase of the game - opening, middlegame, endgame - are used to
-augment this value. All these factors put together account only for a few pawns worth, but may prove to be decisive in close calls. However, we must remember
-that the more complicated our evaluation function is, the more time we need to spend processing it. A cheap function which works well in practice when used to
-search to a greater depth may yield better results than an expensive function prohibiting the depth to which we can search.
-				</p>
-				<p>
-For sum-$0$ games, ie. for games where it is crystal clear that our gain corresponds exactly to our opponent's loss, an elegant version of Minimax called
-Negated MiniMax or NegaMax may be used. It uses the fact that the score of one player is the additive inverse of the score of the other.
-				</p>
-				<code>
-<pre>function negamax(node, depth, color)
-	if depth = 0 or node is a terminal node
-		return color × the heuristic value of node
-	best ← -∞
-	for each child of node
-		value ← -negamax(child, depth - 1, -color)
-		best ← max(best, value)
-	return best</pre>
-				</code>
-				<p>
-An interesting phenomenon is observed on the horizon, called the Horizon Effect. The heuristic score is generally calculated at a static board position, at
-some depth. Consider a situation where a pawn, defended by another, is captured by the queen. The static score would show the advantage of a pawn, rather than
-reflect the blunder that we just entered into the exchange of a queen for a pawn. To counter situations like these, it is prudent to play out the sequence of
-captures that the last move might have initiated. Since either player may choose to discontinue the sequence of exchanges at any point, we must consider
-captures with only the least valuable piece at every point.
-				</p>
-				<code>
-<pre>function staticexchangeevaluation(square, color)
-	if square is not attacked by side
-		return 0
-	piece, piecevalue ← getsmallestattacker(square, side)
-	capture(piece, square)
-	value ← max(0, piecevalue - staticexchangeevaluation(square, -color))
-	undocapture(piece, square)
-	return value</pre>
-				</code>
-			</div>
-
-			<div class="c223">
-				<p>
-As far as I know, the search space for all possible chess positions is far too large for a computer to process exhaustively. Processing the search space
-completely up to a specific depth in the future is wasteful too, because even from an early stage it is possible to exclude certain moves as blasphemous. It is
-a better idea to search deeply along the lines of moves which seem more promising to begin with. If at any point in the search, we realize that our present
-line of search allows the opponent a greater advantage than the best line of play explored by us thus far, we may safely abandon that line without wasting
-further time in reckoning its alternative outcomes. This is called pruning the tree. Using lower and upper bounds, $\alpha$ and $\beta$, obtained from
-searching prior moves, to limit the extent of the search brings us to the $\alpha \beta$ Pruning Alogrithm for MiniMax.
-				</p>
-				<code>
-<pre>function alphabetaminimax(node, depth, α, β, maximizingPlayer)
-	if depth = 0 or node is a terminal node
-		return the heuristic value of node
-	if maximizingPlayer
-		best ← -∞
-		for each child of node
-			value ← alphabetaminimax(child, depth - 1, α, β, FALSE)
-			best ← max(best, value)
-			α ← max(α, value)
-			if β ≤ α
-				break /* β cut-off */
-		return best /* fail soft */
-	else
-		best ← ∞
-		for each child of node
-			value ← alphabetaminimax(child, depth - 1, α, β, TRUE)
-			best ← min(best, value)
-			β ← min(β, value)
-			if β ≤ α
-				break /* α cut-off */
-		return best /* fail soft */</pre>
-				</code>
-				<p>
-Similarly, the $\alpha \beta$ Pruning Algorithm may be adapted for NegaMax.
-				</p>
-				<code>
-<pre>function alphabetanegamax(node, depth, α, β, color)
-	if depth = 0 or node is a terminal node
-		return color * the heuristic value of node
-	best ← -∞
-	for each child of node
-		value ← -alphabetanegamax(child, depth - 1, -β, -α, -color)
-		best ← max(best, value)
-		α ← max(α, value)
-		if β ≤ α
-			break /* beta cut-off */
-	return best /* fail soft */</pre>
-				</code>
-				<p>
-Of course, simply because the algorithm is capable of discarding moves which seem blunderous compared to the options already explored, does not mean that it is
-able to prune away all errors beforehand. Some moves are not a bad idea until explored to a much greater depth, and cannot be discarded early. Moreover, if we
-begin by checking moves in descending order of stupidity, then every new move explored will show an improvement, and we shall end up checking all the moves
-anyway. Move ordering plays a crucial role in determining whether the algorithms offer any advantage at all over the unpruned varieties. This ordering may be
-obtained by using a suitable heuristic, or, in an iteratively deepening framework, derived from the scores obtained when evaluated to a shallower depth.
-				</p>
-				<p>
-The Principal Variation Search Algorithm uses an avaiable move ordering to aggressively search smaller $(\alpha, \beta)$ windows. At every game state, it
-assumes that the first move in the ordering will yield the best results. Once it obtains this value, it searches the remaining moves with a null window, to
-expedite cutoffs. If it is mistaken, and a move improves on the first move, then it will research the corresponding subtree using the full window.
-				</p>
-				<code>
-<pre>function principalvariation(node, depth, α, β, color)
-	if depth = 0 or node is a terminal node
-		return color × the heuristic value of node
-	for each child of node
-		if child is not first child
-			score ← -principalvariation(child, depth - 1, -α - 1, -α, -color) /* null window search */
-			if α < score < β /* fail high */
-				score ← -principalvariation(child, depth - 1, -β, -score, -color) /* full window search */
-		else
-			score ← -principalvariation(child, depth - 1, -β, -α, -color)
-		α ← max(α, score)
-		if β ≤ α
-			break /* beta cut-off */
-	return α</pre>
-				</code>
-			</div>
-
-			<div class="c224">
-				<p>
-As far as I know, neural networks are becoming pretty good at a lot of things these days. What are they? In essence, we may think of a neural network as a
-function $f$ controlled by the set of parameters $\theta$ between hyperspaces $\Re^p$ and $\Re^q$, ie. $f_\theta : \Re^p \to \Re^q$. But first, let us describe
-a single neuron, intuitively, following its most common mathematical formulation.
-				</p>
-				<p>
-Biologically, a neuron receives impulses from other neurons, is excited by them to an extent, and subsequently generates a response. If a neuron receives
-impulses from $p$ other neurons, its impulse $x$ to response $z$ characteristics may be mathematically modeled as a map $n_w: \Re^p \to \Re$. Some neurons
-excite it more, some less: hence its excitement may be approximated as a weighted mean, ie. $\bar{a} = \Sigma^{p}_{i = 1} w_i \cdot x_i$. The neuron is usually
-sensitive to a particular range of excitements and its response generally trails off with 'distance' from this range. We may fix the center of this range by
-adding a bias to the excitement, ie. $a = \Sigma^{p}_{i = 1} w_i \cdot x_i + b$. The response may then be considered a nonlinear function of the excitement,
-ie. $z = \frac{1}{1 + e^{-a}}$. This function $z(a)$ is called the sigmoid.
-				</p>
-				<p>
-Now if we stack $q$ of these neurons into a layer, each with their separate set of weights $w \in W$, we obtain a neural layer $l_W: \Re^p \to \Re^q$. And if
-we connect layers by feeding the outputs of one layer to the inputs of the next, we obtain a neural network. It really is that simple. But is this artificial
-construction enough for them to do all the neat things we have heard of? Not nearly. Then, how do they do it? They aren't 'special': they too must be trained.
-There are basically $2$ types of training: supervised and unsupervised. By extension there are $2$ classes of networks, depending on how they have been
-trained. Supervised training is generally used to make function approximators, while unsupervised training is used to make feature extractors.
-				</p>
-				<p>
-A supervised training set consists of training samples of inputs and expected outputs, and looks like $\{(x_i, y_i) | x_i \in \Re^p, y_i \in \Re^q\}_{i =
-1}^{n}$. The goal is to have the neural network learn a generalized mapping such that $f_\theta (x_i) \approx y_i \forall i$. We choose a set of parameters
-$\theta^\star$ which minimizes a cost function $||: \Re^q \times \Re^q \to \Re$ as $\theta^\star = \underset{\theta}{\text{argmin}} \Sigma^{n}_{i = 1}|
-f_\theta(x_i), y_i|$. That does not seem too difficult. But the beauty of neural networks is that they can even generate 'sensible' outputs even for inputs
-which were not in the training set: they can generalize, they can 'learn'.
-				</p>
-				<p>
-An unsupervised training set, on the other hand, consists only of inputs, and looks like $\{x_i | x_i \in \Re^p\}_{i = 1}^{n}$. The goal is far more involved,
-and the outcome far more intriguing. The network learns a q dimensional representation of the p dimensional data, which can be used in place of the original
-vector, and thought of as a tuple of extracted features. Why is this so brilliant? Because it allows us to construct hierarchical abstractions for different
-forms of data representation, giving rise to some very exciting properties. How is this done? A common method is to define a $2^{nd}$ reconstruction function
-$g_\phi : \Re^q \to \Re^p$ to apporximate $g_\phi(f_\theta(x_i)) \approx x_i \forall i$.
-				</p>
-				<p>
-Once trained, what can a network do? In general, it is expected to do $1$ of $2$ things: classification or regression. By extension, there are $2$ classes of
-neural networks depending on what they do. While classifying, the network attempts to label input vectors into $1$ or more of $q$ discrete classes and hence
-its range looks like $\{0, 1\}^q$ in binary or $\{-1, 1\}^q$ in bipolar vectors. While regressing, the network attempts to produce continuous intermediate
-values for all input vectors and hence its range looks like $\Re^q$.
-				</p>
-			</div>
-
-			<div class="c225">
-				<p>
-As far as I know, neural networks must be systematically trained before they can do anything at all. How? The secret behind their success is gradient descent.
-The simplest explanation of gradient descent is that if we were trying to change the parameters to minimize the cost function, we would want to move the
-parameters by a small amount in the direction in which the cost decreases the most. If the cost function was differentiable with respect to the parameters,
-we would like to iteratively do $\theta^{t + 1} \leftarrow \theta^t - \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$ with time t. If we imagine
-ourselves as a parameter configuration, trying to find our way downhill across the parameter space, how would we go about it? Our best bet would perhaps be to
-follow the steepest slope downwards.
-				</p>
-				<p>
-But how do we know that these small steps will actually lead somewhere? And if they do, how can we tell that we have found a good spot, and are not simply
-stuck in a ditch, the kind they call a local minima? We don't. We can't. We are exploring an unknown land, and have very little idea what we may find. However,
-we may prepare ourselves to follow traditional knowledge passed down through generations by fellow explorers. We shall discuss some of that wisdom, on how to
-measure our steps with time, over and above simply following the lay of the land, to chart a course for ourselves. We represent $\nabla^t_{\theta^t}
-|f_{\theta^t}(x), y|$ by $\delta^t$.
-				</p>
-				<p>
-If we take long steps, would we jump across valleys we would otherwise have liked to descend into? If we take short steps, would we remain stuck in a wayside
-ditch we could otherwise have climbed out of? Perhaps. Perhaps not. The best we can do is to guess: when we started on our quest, we were probably a long way
-off from our target and hence should have taken long steps, shortening them as we near our goal so as not to overshoot. This spirit is captured by the steps
-$\frac{\alpha}{\beta^t} \cdot \delta^t$, where $\beta^t = 1 + \tau \cdot t$ for decay, $(\beta^t)^2 = (\beta^{t - 1})^2 + (\delta^t)^2$ for adaptive gradients,
-$(\beta^t)^2 = \mu(\beta^{t - 1})^2 + (1 - \mu) \cdot (\delta^t)^2 $ for root mean square propagation.
-				</p>
-				<p>
-If we took a step in a direction that looked good, would our confidence grow and would we be encouraged to take longer steps? Similarly, if we took a step in
-the direction that didn't look promising, wouldn't our confidence shrink? This idea is captured by the steps $\alpha \cdot \gamma^t \odot \delta^t$, where
-$\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot
-\delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise \\ \end{cases}$ for adaptive gain, $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i \cdot (1 + \Delta), &
-\delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot \delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise\\
-\end{cases}$ for bar delta bar. Resilient propagation goes as far as to take steps solely based on confidence, without worrying about how steep the terrain is:
-it steps as $\alpha \cdot \gamma^t \odot sgn(\delta^t)$.
-				</p>
-				<p>
-If we had been travelling in one direction for a while, would we develop a fondness for that direction, and ignore minor permonitory bumps along the way? This
-thought is captured by the concept of momentum, which replaces the steps by a speed, $\theta^{t + 1} \leftarrow \theta^t - v^t$ where $v^t = \gamma \cdot v^{t
-- 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$.
-				</p>
-				<p>
-What about the terrain in the first place? Where did it come from? Can it be sculpted or moulded? The answer lies in the nature of the network, the
-cost function, and their interaction with the dataset. A few of the common cost functions $|f_{\theta}(x), y|$ are the mean squared $(f_{\theta}(x)  - y) \cdot
-(f_{\theta}(x)  - y)$, the cross entropy $-(y \cdot \ln(f_{\theta}(x)) + (1 - y) \cdot \ln(1 - f_{\theta}(x)))$, the negative log likelihood $-y \cdot \ln(
-f_{\theta}(x))$, the divergence $y \cdot (\ln(y) - \ln(f_{\theta}(x)))$ and the cosine distance $\frac{f_{\theta}(x)}{|f_{\theta}(x)|} \cdot \frac{y}{|y|}$.
-				</p>
-				<p>
-If we choose to meticulously measure our slopes before every step, taking the opinion of each and every training sample into account, we would be performing
-batch gradient descent on the cost $\frac{1}{n} \Sigma^{n}_{i = 1}|f_\theta(x_i), y_i|$. If we choose to only listen to a single training sample, we would be
-performing stochastic gradient descent on the cost $|f_\theta(x_i), y_i|$. Anything between the two extremes uses minibatches.
-				</p>
-			</div>
-
-			<div class="c226">
-				<p>
-As far as I know, gradient descent is an abstract mathematical concept. And you cannot simply ask a computer to understand and apply an abstract mathematical
-concept - even humans have trouble, sometimes - at least, not yet. Explicitly coding a means to calculate the derivatives for each of the parameters is far too
-tedious to even consider, because there tends to be several million, if not billion of them. How then, is it done? The answer lies in backpropagation.
-				</p>
-				<p>
-Deconstructing the structure of neural networks, we would find a collection of layers. These layers are mostly independent of each other. The sequential nature
-of the arrangement between layers, with the outputs of one being fed into the inputs of the next, is the only link between them. The forward pass applies the
-map of each of the layers sequentially to the input. It would be convenient to define a similar backward pass for gradient descent. The idea is to feed the
-gradients backwards through the layers, in the reverse order, to propagate the derivative of the cost funciton, and calculate the derivatives with respect to
-the parameters in each of the layers from it. How would such an idea be realized?
-				</p>
-				<p>
-Deconstructing the functional expression of neural networks, we would find the mapping, $f_\theta$, of the $n$-layer network collectively to simply be the
-composition, $f_{\theta_n}^{(n)} \circ f_{\theta_{n - 1}}^{(n - 1)} \dots f_{\theta_2}^{(2)} \circ f_{\theta_1}^{(1)}$, of the mappings of the individual
-layers, $f_{\theta_i}^{(i)}$. The output is fed into a cost function, $|f_\theta|$. Subsequently, all its gradients, $\frac{\partial |f_\theta|}{\partial
-\theta_i}$, are calculated, and all the parameters, $\theta_i$, updated.
-				</p>
-				<p>
-Backpropagation is in essence an intelligent application of the chain rule for partial derivatives. For a map from a system of $p$ independent variables $x_n
-\in \Re^p$ to another system of $q$ independent variables $x_{n + 1} \in \Re^q$, the Jacobian matrix $\frac{\partial (x_{n + 1}^{(1)} \dots x_{n + 1}^{(q)})}
-{\partial (x_n^{(1)} \dots x_n^{(p)})}$ is defined as $\mathbb{J}_{i, j} = \frac{\partial x_{n + 1}^{(i)}}{\partial x_n^{(j)}}$. To convert the partial
-derivatives of a function, $f$, with respect to the system $x_{n + 1}$ into the those with respect to the system $x_n$, we use the Jacobian as $\frac{\partial
-f}{\partial x_n} = \frac{\partial (x_{n + 1}^{(1)} \dots x_{n + 1}^{(q)})}{\partial (x_n^{(1)} \dots x_n^{(p)})}^T \cdot \frac{\partial f}{\partial x_{n + 1}}$.
-				</p>
-				<p>
-Each layer, $l_i$, in a neural network defines a new system of independent variables, $x_{i + 1}$ as its output. For an $n$-layer network as a whole, $x_1$ is
-its input and $x_{n + 1}$ is its output. This definition implies that $x_{i + 1}$ is a function of $x_i$ and $\theta_i$, and them alone. If $l_i$ feeds forward
-$\overrightarrow{f_{\theta_i}^{(i)}}: \begin{cases} & \Re^p \to \Re^q \\ & x_i \mapsto x_{i + 1} \end{cases}$, it backpropagates $\overleftarrow{f_{\theta_i}
-^{(i)}}: \begin{cases} & \Re^q \to \Re^p \\ & \frac{\partial |f_\theta|}{\partial x_{i + 1}} \mapsto \frac{\partial |f_\theta|}{\partial x_i}\end{cases}$.
-Hence, $l_i$, provided $\frac{\partial |f_\theta|}{\partial x_{i + 1}}$ by backpropagation, can calculate both $\frac{\partial |f_\theta|}{\partial x_i}$,
-necessary for further backpropagation, and $\frac{\partial |f_\theta|}{\partial \theta_i}$, necessary for parameter updates, by the chain rule.
-				</p>
-			</div>
-
-			<div class="c227">
-				<p>
-As far as I know, neural networks cannot inherently understand humanspeak. Words need to be represented in a form that computers can interpret. The challenge
-lies in that fact that alphabetically speaking, words which look starkly dissimilar may be identical in meaning, while words which look alike may mean
-altogether different things. What makes things worse is that the meaning of words may even vary with context. Computers, being logically deterministic, have
-trouble interpreting these nuances. Rules to capture them fail to generalize, and show very little similarity across languages, making the work extremely
-tedious. Thankfully, computers are good with numbers. So we arrive at the common ground: word vectors.
-				</p>
-				<p>
-The simplest representation is to use a one-hot encoding. Thus, each word $w$, in an word vocabulary $V$, has a vectorial representation, $v \in\{0, 1\}^{|V|}$
-constrained such that $|v| = 1$ and for two words, $w = w\prime \iff v = v\prime$. We often refer to the word having $v_i = 1$ as the $i^{th}$ word in the
-vocabulary, $v^{(i)}$. But for any language with a decent sized vocabulary, $|V|$ is rather large. To make matters worse, this encoding captures no concept of
-the similarity between words whatsoever. All Hamming Distances are $2$, all Cosine Distances are $0$, among other bad things that can be said about it. So
-where do we go from there?
-				</p>
-				<p>
-Deeper, in terms of neural network layers. Denser, in terms of the size of the vector space. Continuous, in terms of the field under the vector space. Until
-the representations begin to look more like $v \in \Re^m$ with $m \ll |V|$. That being the destination, but how do we get there? We would like to ensure that
-these have some 'sense' embedded within them. We adopt the policy of recognizing a word by the company it usually keeps. We can divide models for them in
-broadly two categories: the continuous bag of words and the skip gram models. The good news is that these models can be trained over large corpuses, completely
-unsupervised. A peculiarity of the neural networks used to generate both these models is that the connections from the input to the hidden, intermediate vector
-does not contain a nonlinear activation function. Both layers are fully connected, but strictly linear. These models give rise to some neat properties of their
-word vectors, too. For example, once you are done training, you might discover that $v_{queen} \approx v_{king} - v_{man} + v_{woman}$. Indeed, it is a matter
-of no mere coincidence, for such additive patterns generalize to several words.
-				</p>
-				<p>
-The intuition between the continuous bag of words model is to use the context in which a word is found to predict a probability distribution of itself. So we
-construct a neural network where the input vector is the mean of the one-hot encodings of words in the context, the intermediate vector gives the dense neural
-word embedding, and the outer vector is softmaxed to generate the probability distribution of the word itself. This output is optimized with respect to a cost
-function, generally the negative log likelihood, against the one-hot encoding of the centre word itself.
-				</p>
-				<p>
-The intuition between the skip gram model is to use the centre word to predict a probability distribution over the context in which it is found. Though the
-neural network construction is nearly identical, its input and output are in a sense reversed. Instead of taken the mean of the context as the input vector and
-optimizing the cost function against the one-hot encoding of the centre word, we take the one-hot encoding of the centre word as the input vector and optimize
-against the mean of the context.
-				</p>
-				<p>
-How do we capture these intuitions mathematically? The number of words, $C$, included in the context on either side of the centre word is called the size of
-the context window. Say the centre word is $w^{(i)}$, and the context words are $w^{(j)}, \forall j \in \mathbb{Z} | |j| \in \mathbb{N}_{\leq C}$. If $W_I$ and
-$W_O$ be the input and output layer weights respectively, and $v_I \in W_I$ and $v_O \in W_O$ be a column and row in these matrices, then the optimization of
-the continuous bag of words model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\log\frac{\exp{({v_O^{(i)}}^T \frac{1}{2C} \Sigma_j v_I^{(j)})}}{\Sigma_k
-\exp({{v_O^{(i)}}^T v_I^{(k)}})}$, while that for the skip gram model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\frac{1}{2C}\Sigma_j\log\frac{\exp{({v_O
-^{(j)}}^T v_I^{(i)})}}{\Sigma_k\exp({{v_O^{(k)}}^T v_I^{(i)}})}$ where $\Sigma_j$ sums over the context $\displaystyle\sum_{\substack{j = -C \\ j \neq 0}}^{C}$
-and $\Sigma_k$ sums over the vocabulary $\displaystyle\sum_{k = 1}^{|V|}$. The optimization is then carried out for every word in the corpus.
-				</p>
-			</div>
+			<div id="chessengines" class="c221"></div>
+			<div id="minimax" class="c222"></div>
+			<div id="alphabetapruning" class="c223"></div>
+			<div id="neuralnetworks" class="c224"></div>
+			<div id="gradientdescent" class="c225"></div>
+			<div id="backpropagation" class="c226"></div>
+			<div id="wordvectors" class="c227"></div>
 		</div>
 
 		<div id="textsection" class="presenter">
