@@ -1,4 +1,4 @@
-<p>
+<p class="text">
 As far as I know, the search space for all possible chess positions is far too large for a computer to process exhaustively. Processing the search space
 completely up to a specific depth in the future is wasteful too, because even from an early stage it is possible to exclude certain moves as blasphemous. It is
 a better idea to search deeply along the lines of moves which seem more promising to begin with. If at any point in the search, we realize that our present
@@ -29,7 +29,7 @@ searching prior moves, to limit the extent of the search brings us to the $\alph
                                 break /* α cut-off */
                 return best /* fail soft */</code></pre>
 
-<p>
+<p class="text">
 Similarly, the $\alpha \beta$ Pruning Algorithm may be adapted for NegaMax.
 </p>
 
@@ -45,7 +45,7 @@ Similarly, the $\alpha \beta$ Pruning Algorithm may be adapted for NegaMax.
                         break /* beta cut-off */
         return best /* fail soft */</code></pre>
 
-<p>
+<p class="text">
 Of course, simply because the algorithm is capable of discarding moves which seem blunderous compared to the options already explored, does not mean that it is
 able to prune away all errors beforehand. Some moves are not a bad idea until explored to a much greater depth, and cannot be discarded early. Moreover, if we
 begin by checking moves in descending order of stupidity, then every new move explored will show an improvement, and we shall end up checking all the moves
@@ -53,7 +53,7 @@ anyway. Move ordering plays a crucial role in determining whether the algorithms
 obtained by using a suitable heuristic, or, in an iteratively deepening framework, derived from the scores obtained when evaluated to a shallower depth.
 </p>
 
-<p>
+<p class="text">
 The Principal Variation Search Algorithm uses an avaiable move ordering to aggressively search smaller $(\alpha, \beta)$ windows. At every game state, it
 assumes that the first move in the ordering will yield the best results. Once it obtains this value, it searches the remaining moves with a null window, to
 expedite cutoffs. If it is mistaken, and a move improves on the first move, then it will research the corresponding subtree using the full window.

@@ -62,6 +62,10 @@ html, body {
 	width: 100%;
 }
 
+.text {
+	line-height: 2.0;
+}
+
 pre {
 	position: relative;
 	width: 85%;
@@ -87,6 +91,7 @@ p {
 	left: 0;
 	bottom: 0;
 	text-align: justify;
+	opacity: 1.0;
 }
 
 #textsection {

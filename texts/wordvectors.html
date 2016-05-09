@@ -1,4 +1,4 @@
-<p>
+<p class="text">
 As far as I know, neural networks cannot inherently understand humanspeak. Words need to be represented in a form that computers can interpret. The challenge
 lies in that fact that alphabetically speaking, words which look starkly dissimilar may be identical in meaning, while words which look alike may mean
 altogether different things. What makes things worse is that the meaning of words may even vary with context. Computers, being logically deterministic, have
@@ -6,7 +6,7 @@ trouble interpreting these nuances. Rules to capture them fail to generalize, an
 tedious. Thankfully, computers are good with numbers. So we arrive at the common ground: word vectors.
 </p>
 
-<p>
+<p class="text">
 The simplest representation is to use a one-hot encoding. Thus, each word $w$, in an word vocabulary $V$, has a vectorial representation, $v \in\{0, 1\}^{|V|}$
 constrained such that $|v| = 1$ and for two words, $w = w\prime \iff v = v\prime$. We often refer to the word having $v_i = 1$ as the $i^{th}$ word in the
 vocabulary, $v^{(i)}$. But for any language with a decent sized vocabulary, $|V|$ is rather large. To make matters worse, this encoding captures no concept of
@@ -14,7 +14,7 @@ the similarity between words whatsoever. All Hamming Distances are $2$, all Cosi
 where do we go from there?
 </p>
 
-<p>
+<p class="text">
 Deeper, in terms of neural network layers. Denser, in terms of the size of the vector space. Continuous, in terms of the field under the vector space. Until
 the representations begin to look more like $v \in \Re^m$ with $m \ll |V|$. That being the destination, but how do we get there? We would like to ensure that
 these have some 'sense' embedded within them. We adopt the policy of recognizing a word by the company it usually keeps. We can divide models for them in
@@ -25,25 +25,25 @@ word vectors, too. For example, once you are done training, you might discover t
 of no mere coincidence, for such additive patterns generalize to several words.
 </p>
 
-<p>
+<p class="text">
 The intuition between the continuous bag of words model is to use the context in which a word is found to predict a probability distribution of itself. So we
 construct a neural network where the input vector is the mean of the one-hot encodings of words in the context, the intermediate vector gives the dense neural
 word embedding, and the outer vector is softmaxed to generate the probability distribution of the word itself. This output is optimized with respect to a cost
 function, generally the negative log likelihood, against the one-hot encoding of the centre word itself.
 </p>
 
-<p>
+<p class="text">
 The intuition between the skip gram model is to use the centre word to predict a probability distribution over the context in which it is found. Though the
 neural network construction is nearly identical, its input and output are in a sense reversed. Instead of taken the mean of the context as the input vector and
 optimizing the cost function against the one-hot encoding of the centre word, we take the one-hot encoding of the centre word as the input vector and optimize
 against the mean of the context.
 </p>
 
-<p>
+<p class="text">
 How do we capture these intuitions mathematically? The number of words, $C$, included in the context on either side of the centre word is called the size of
-the context window. Say the centre word is $w^{(i)}$, and the context words are $w^{(j)}, \forall j \in \mathbb{Z} | |j| \in \mathbb{N}_{\leq C}$. If $W_I$ and
-$W_O$ be the input and output layer weights respectively, and $v_I \in W_I$ and $v_O \in W_O$ be a column and row in these matrices, then the optimization of
-the continuous bag of words model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\log\frac{\exp{({v_O^{(i)}}^T \frac{1}{2C} \Sigma_j v_I^{(j)})}}{\Sigma_k
+the context window. Say the centre word is $w^{(i)}$, and the context words are $w^{(j)},\ \forall j \in \mathbb{Z}\ |\ |j| \in \mathbb{N}_{\leq C}$. If $W_I$
+and $W_O$ be the input and output layer weights respectively, and $v_I \in W_I$ and $v_O \in W_O$ be a column and row in these matrices, then the optimization
+of the continuous bag of words model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\log\frac{\exp{({v_O^{(i)}}^T \frac{1}{2C} \Sigma_j v_I^{(j)})}}{\Sigma_k
 \exp({{v_O^{(i)}}^T v_I^{(k)}})}$, while that for the skip gram model looks like $\underset{W_{I}, W_{O}}{\text{min}} -\frac{1}{2C}\Sigma_j\log\frac{\exp{({v_O
 ^{(j)}}^T v_I^{(i)})}}{\Sigma_k\exp({{v_O^{(k)}}^T v_I^{(i)}})}$ where $\Sigma_j$ sums over the context $\displaystyle\sum_{\substack{j = -C \\ j \neq 0}}^{C}$
 and $\Sigma_k$ sums over the vocabulary $\displaystyle\sum_{k = 1}^{|V|}$. The optimization is then carried out for every word in the corpus.

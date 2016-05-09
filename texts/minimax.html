@@ -1,4 +1,4 @@
-<p>
+<p class="text">
 As far as I know, simply being able to generate legal moves does not allow us to win a game of chess - unless it is played against a random-move-generator-like
 monkey. The trick is to find the best move. But in this case the definition of best, if there is one, is highly ambiguous, especially given that a move that
 looks good in a position may turn out to be somewhat less than impressive in the future. For $2$-player, deterministic games, ie. for games in which nothing is
@@ -21,7 +21,7 @@ left to chance, our best move is only as good as our opponent's best response wi
 			best ← min(best, value)
 		return best</code></pre>
 
-<p>
+<p class="text">
 The two players are modeled as having two antagonistic objectives. One attempts to generate moves to maximize the utility score of the game state, while the
 other attempts to generate moves to minimize the same. When it is not possible to come up with a perfectly rational untility function, a suitable heuristic is
 used. In chess, the simplest such is to use a weighted sum of the number of pieces of one side, and subtract from it the same for the pieces of the other side.
@@ -29,7 +29,7 @@ This works quite well in practice. Classically, knights, bishops, rooks, and que
 obviously, invaluable.
 </p>
 
-<p>
+<p class="text">
 Other factors such as piece mobility, piece connectivity, board control, piece formations (batteries, doubled pawns, isolated pawns, backward pawns, passed
 pawns), trapped pieces, king safety (pawn shield, king tropism), tempo, etc. tempered by the phase of the game - opening, middlegame, endgame - are used to
 augment this value. All these factors put together account only for a few pawns worth, but may prove to be decisive in close calls. However, we must remember
@@ -37,7 +37,7 @@ that the more complicated our evaluation function is, the more time we need to s
 search to a greater depth may yield better results than an expensive function prohibiting the depth to which we can search.
 </p>
 
-<p>
+<p class="text">
 For sum-$0$ games, ie. for games where it is crystal clear that our gain corresponds exactly to our opponent's loss, an elegant version of Minimax called
 Negated MiniMax or NegaMax may be used. It uses the fact that the score of one player is the additive inverse of the score of the other.
 </p>
@@ -51,7 +51,7 @@ Negated MiniMax or NegaMax may be used. It uses the fact that the score of one p
 		best ← max(best, value)
 	return best</code></pre>
 
-<p>
+<p class="text">
 An interesting phenomenon is observed on the horizon, called the Horizon Effect. The heuristic score is generally calculated at a static board position, at
 some depth. Consider a situation where a pawn, defended by another, is captured by the queen. The static score would show the advantage of a pawn, rather than
 reflect the blunder that we just entered into the exchange of a queen for a pawn. To counter situations like these, it is prudent to play out the sequence of

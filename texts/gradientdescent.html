@@ -1,4 +1,4 @@
-<p>
+<p class="text">
 As far as I know, neural networks must be systematically trained before they can do anything at all. How? The secret behind their success is gradient descent.
 The simplest explanation of gradient descent is that if we were trying to change the parameters to minimize the cost function, we would want to move the
 parameters by a small amount in the direction in which the cost decreases the most. If the cost function was differentiable with respect to the parameters,
@@ -7,7 +7,7 @@ ourselves as a parameter configuration, trying to find our way downhill across t
 follow the steepest slope downwards.
 </p>
 
-<p>
+<p class="text">
 But how do we know that these small steps will actually lead somewhere? And if they do, how can we tell that we have found a good spot, and are not simply
 stuck in a ditch, the kind they call a local minima? We don't. We can't. We are exploring an unknown land, and have very little idea what we may find. However,
 we may prepare ourselves to follow traditional knowledge passed down through generations by fellow explorers. We shall discuss some of that wisdom, on how to
@@ -15,7 +15,7 @@ measure our steps with time, over and above simply following the lay of the land
 |f_{\theta^t}(x), y|$ by $\delta^t$.
 </p>
 
-<p>
+<p class="text">
 If we take long steps, would we jump across valleys we would otherwise have liked to descend into? If we take short steps, would we remain stuck in a wayside
 ditch we could otherwise have climbed out of? Perhaps. Perhaps not. The best we can do is to guess: when we started on our quest, we were probably a long way
 off from our target and hence should have taken long steps, shortening them as we near our goal so as not to overshoot. This spirit is captured by the steps
@@ -23,7 +23,7 @@ $\frac{\alpha}{\beta^t} \cdot \delta^t$, where $\beta^t = 1 + \tau \cdot t$ for 
 $(\beta^t)^2 = \mu(\beta^{t - 1})^2 + (1 - \mu) \cdot (\delta^t)^2 $ for root mean square propagation.
 </p>
 
-<p>
+<p class="text">
 If we took a step in a direction that looked good, would our confidence grow and would we be encouraged to take longer steps? Similarly, if we took a step in
 the direction that didn't look promising, wouldn't our confidence shrink? This idea is captured by the steps $\alpha \cdot \gamma^t \odot \delta^t$, where
 $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot
@@ -33,20 +33,20 @@ $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \del
 it steps as $\alpha \cdot \gamma^t \odot sgn(\delta^t)$.
 </p>
 
-<p>
+<p class="text">
 If we had been travelling in one direction for a while, would we develop a fondness for that direction, and ignore minor permonitory bumps along the way? This
 thought is captured by the concept of momentum, which replaces the steps by a speed, $\theta^{t + 1} \leftarrow \theta^t - v^t$ where $v^t = \gamma \cdot v^{t
 - 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$.
 </p>
 
-<p>
+<p class="text">
 What about the terrain in the first place? Where did it come from? Can it be sculpted or moulded? The answer lies in the nature of the network, the
 cost function, and their interaction with the dataset. A few of the common cost functions $|f_{\theta}(x), y|$ are the mean squared $(f_{\theta}(x)  - y) \cdot
 (f_{\theta}(x)  - y)$, the cross entropy $-(y \cdot \ln(f_{\theta}(x)) + (1 - y) \cdot \ln(1 - f_{\theta}(x)))$, the negative log likelihood $-y \cdot \ln(
 f_{\theta}(x))$, the divergence $y \cdot (\ln(y) - \ln(f_{\theta}(x)))$ and the cosine distance $\frac{f_{\theta}(x)}{|f_{\theta}(x)|} \cdot \frac{y}{|y|}$.
 </p>
 
-<p>
+<p class="text">
 If we choose to meticulously measure our slopes before every step, taking the opinion of each and every training sample into account, we would be performing
 batch gradient descent on the cost $\frac{1}{n} \Sigma^{n}_{i = 1}|f_\theta(x_i), y_i|$. If we choose to only listen to a single training sample, we would be
 performing stochastic gradient descent on the cost $|f_\theta(x_i), y_i|$. Anything between the two extremes uses minibatches.

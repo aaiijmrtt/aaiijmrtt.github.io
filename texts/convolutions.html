@@ -1,0 +1,47 @@
+<p class="text">
+As far as I know, neural networks cannot see things the way we do. We unconsiciously interpret objects from images, and ideas from objects. That is no simple
+task for a computer. Digital representations of images may be common, but extracting the underlying ideas from the encodings is far from trivial. This becomes
+especially tricky because the quality of images increases with resolution, resulting in a corresponding increase in the dimensionality of the vectors used,
+leaving the model with an unhealthy number of parameters to optimize. But images are highly spatially coherent. Is there no way to utilize the underlying
+structural interdependencies between contiguous points to tackle the task of their processing? There is: convolutions.
+</p>
+
+<p class="text">
+What are convolutions? Roughly speaking, they express the overlap of one function as it is shifted across another in some common domain. Mathematically, one
+dimensional discrete convolutions may be characterized by a summation of pointwise products of the form $(f * g)(x_0) = \sum_{x} f(x) \cdot g(x_0 - x)$.
+Convolutions over continuous domains use integrals, while those over multiple variables use nested operations. Interestingly enough, convolutions have all the
+best algebraic properties. $f * g = f * g$, $f * (g * h) = (f * g) * h$, $f * (g + h) = f * g + f * h$, $\ \exists\ \delta\ |\ \forall f$, $f * \delta = \delta
+* f = f$, and $\forall\ f\ \exists\ f^{-1}\ |\ f * f^{-1} = f^{-1} * f = \delta$. The identity is defined as $\delta(x) = \begin{cases} \infty, & x = 0 \\ 0, &
+otherwise \end{cases}$, subject to $\displaystyle\int_{-\infty}^{\infty} \delta(x)dx = 1$.
+</p>
+
+<p class="text">
+Images are usually represented as $2$-dimensional planes, or $3$-dimensional spaces considering multiple channels, each lattice point representing a pixel
+intensity. These can be squashed into $1$-dimensional representations by shuffling its points along some major/minor axes, but we shall leave those grotesque
+details out to aid intuition in the followinng expressions. The basic idea is to step through patches of the input, trying to make as much sense of each patch
+as we go along, and recording our observations at corresponding points in the output. We apply the same logic to each of our input patches, in the form of a
+transformation kernel, to generate each output point. As we move the input patch further along one input axis, we move the output point further along the
+corresponding output axis.
+</p>
+
+<p class="text">
+Let the input, $x$, and transformation kernel have $M \times N$ and $m \times n$ dimensions, respectively. The number of points we move the input patch in one
+step is called the stride, $s$. Thus, a little mental gymnastics will show that the output, $y$, has dimensions $(M - m) / s + 1 \times (N - n) / s + 1$. If
+this turns out to be an ugly fraction, the input may be padded at either end along either axis, usually with $0$s, for $p$ dimensions. This makes the output
+dimensions $(M + 2p - m) / s + 1 \times (N + 2p - n) / s + 1$. Considering a linear kernel, $(w, b)$, the convolution mathematically looks like $y_{i_0, j_0} =
+\displaystyle\sum_{i = 1}^m \displaystyle\sum_{j = 1}^n w_{i, j} \cdot x_{f(i, i_0), f(j, j_0)} + b_{i_0, j_0}$, where $f(x, x_0) = s (x_0 - 1) + x - p$.
+</p>
+
+<p class="text">
+The convolution layer is usually followed by a pooling layer. This aggregates the information extracted by the kernel from adjacent patches, usually by taking
+the minimum, maximum or average. The patches used in pooling slide over the result of the convolution, but do not overlap, ie. $s \geq max(m, n)$.
+Mathematically, they look like $z_{i_0, j_0} = \underset{i, j}{\text{pool}}\ y_{f(i, i_0), f(j, j_0)}$, where $\text{pool} \in \{\text{min}, \text{max}, \text{
+avg}\}$. This is often followed or preceded by a non-linear layer in practice.
+</p>
+
+<p class="text">
+A beautiful property that arises out of the mathematics is translational invariance. The same kernel is applied to the entire image, by shifting its position
+through the patches. If it learns to be a feature detector, it shall detect the feature regardless of its absolute position in the original image. We certainly
+want our neural network to always recognize a pen, as a pen is a pen, regardless of whether it appears at the top-left or bottom-right of the photographers
+canvas. And convolutions allow it to do just that.
+</p>

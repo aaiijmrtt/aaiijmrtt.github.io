@@ -1,18 +1,18 @@
-<p>
+<p class="text">
 As far as I know, computers are ridiculously good at playing chess these days. They have consistently exhibited superhuman performance. Modern day computer
 chess programs are, humanly speaking, mostly unbeatable. But this is not to suggest that we are any closer to a machine revolution. Computers are still very
 far from achieving the general intelligence displayed by humans. How then did they get so good at this specific task? We outline the secrets to their success,
 one development at a time.
 </p>
 
-<p>
+<p class="text">
 The design of a chess engine requires the consideration of several aspects. The most fundamental design decisions are related to the representation of boards
 and piece positions, the generation of valid moves, move encoding and update, evaluation of a board state, search for an optimal sequence of moves while
 considering the best opponent's countermoves. While adversarial search can be characterized by abstract algorithms, the others are necessarily implementation
 specific. You have been warned.
 </p>
 
-<p>
+<p class="text">
 Every chess engine maintains an internal board representation to keep track of the positions of pieces. This representation may be piece centric, keeping track
 of the squares on which given pieces are, or square centric, keeping track of the pieces on given squares. One of the most efficient representations uses
 bitboards. A bitboard representes the $64$ squares of a chessboard in a $64$ bit word, $1$ bit per square, in row major or column major order. The engine
@@ -20,20 +20,20 @@ maintains an array of such bitboards, $1$ for each piece type of each colour, or
 representation.
 </p>
 
-<p>
+<p class="text">
 Bitboards are popular for their space efficiency, as well as for their speed in move generation using bitwise operations. For example, white knights are at
 </p>
 
 <pre><code>whiteKnights = bitboards[WHITE] & bitboards[KNIGHT];</code></pre>
 
-<p>
+<p class="text">
 For non-sliding pieces, ie. for pawns, knights and kings, it is convenient to maintain a lookup table by piece and square in the form of a $2$ dimensional
 array. For example, moves for the white knight at a position are
 </p>
 
 <pre><code>knightMoves = moves[KNIGHT][position];</code></pre>
 
-<p>
+<p class="text">
 Further checks are required for pieces at the edges of the board. Similarly, black pieces attacked, white pieces defended, and empty squares scouted by the
 white knight are, respectively,
 </p>
@@ -42,7 +42,7 @@ white knight are, respectively,
 whiteKnightDefends = moves[KNIGHT][position] & bitboards[WHITE];
 whiteKnightScouts = moves[KNIGHT][position] & ~(bitboards[WHITE] | bitboards[BLACK]);</code></pre>
 
-<p>
+<p class="text">
 Generating moves for sliding pieces, ie. for bishops, rooks and queens, is slightly more challenging. A variety of bitboard fill algorithms may be used. The
 simplest is to smear the position of the piece, using bitwise OR operations, outwards, using bitwise SHIFT operations, while maintain direction along rays,
 using bitwise AND operations with move bitmasks. For example, possible rook moves are
@@ -61,7 +61,7 @@ using bitwise AND operations with move bitmasks. For example, possible rook move
 	return rooksMoves;
 }</code></pre>
 
-<p>
+<p class="text">
 Keeping track of batteries and discovered attacks is even more exciting. They can be obtained by bit twiddling the code which resets to free squares at the end
 of the loop. Once the bitboard of moves is obtained, each of the squares moved to may be examined by popping the least significant $1$ bit. A similar strategy
 is employed for counting the number of pieces of a type in each side, which is used extensively in static game state evaluation. For computers using $2$s
@@ -73,7 +73,7 @@ complement arithmetic, this is as simple as
 	bitboard &= bitboard - 1;
 }</code></pre>
 
-<p>
+<p class="text">
 Further checks are required to generate valid moves under check, and to account for special moves, ie. castling and en passant. Once the moves are generated,
 they must be encoded, and the game state must be unambiguously updated every time this encoding is applied. It is sensible to create an encoding which is both
 compact as well as efficient in use. The various bit groups of the encoding should contain the piece movement and game state update information, which should

@@ -1,5 +1,5 @@
-var classes = ['c0', 'c1', 'c11', 'c12', 'c13', 'c14', 'c15', 'c2', 'c211', 'c212', 'c213', 'c214', 'c215', 'c216', 'c221', 'c222', 'c223', 'c224', 'c225', 'c226', 'c227'];
-var texts = ['chessengines', 'minimax', 'alphabetapruning', 'neuralnetworks', 'gradientdescent', 'backpropagation', 'wordvectors'];
+var classes = ['c0', 'c1', 'c11', 'c12', 'c13', 'c14', 'c15', 'c2', 'c211', 'c212', 'c213', 'c214', 'c215', 'c216', 'c221', 'c222', 'c223', 'c224', 'c225', 'c226', 'c227', 'c228'];
+var texts = ['chessengines', 'minimax', 'alphabetapruning', 'neuralnetworks', 'gradientdescent', 'backpropagation', 'convolutions', 'wordvectors'];
 var backgrounds = ['background2.jpeg', 'background3.jpeg', 'background4.jpeg', 'background5.jpg', 'background6.jpeg', 'background1.jpeg'];
 
 var backindex = 0;
@@ -13,7 +13,9 @@ for(var i = 0; i < classes.length; ++i)
 
 function textfunction(texts, i) {
 	return function() {
-		document.getElementById(texts[i]).innerHTML = window['client' + i].responseText;
+		var element = document.getElementById(texts[i]);
+		element.innerHTML = window['client' + i].responseText;
+		MathJax.Hub.Queue(['Typeset', MathJax.Hub, element]);
 	}
 }
 
