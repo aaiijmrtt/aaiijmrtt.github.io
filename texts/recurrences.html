@@ -1,0 +1,55 @@
+<p class="text">
+As far as I know, feedforward neural networks model their inputs as independent of each other. This is not always a good idea, especially for data sequences.
+For short sequences of fixed length, it might be possible to concatenate the units into larger vectors, and use these as inputs, but not when the dependencies
+range over long sequences, often of variable length. Neural networks must develop a form of memory. The flow of data through neurons must contain cycles,
+whereby neurons can pass themselves information later. These recurrences are implemented by passing hidden state vectors through timesteps. The outputs are a
+function of the current states and current inputs, as are the next hidden states. Mathematically, $h^t = \phi(x^t, h^{t - 1})$ and $y^t = \psi(x^t, h^t)$,
+where $x$, $h$ and $y$ are the input, hidden, and output vectors, and the functions $\phi$ and $\psi$ depend on the chosen model.
+</p>
+
+<p class="text">
+Reasoning about recurrences can be challenging. It is often easier to unfold the network in time, and consider the resulting structure. When unfolding over $n$
+steps, we replicate the network $n$ times, once for each timestep, considering only the nonrecurrent connections. We then add the recurrent connections between
+adjacent copies of the network, across a timestep in the appropriate direction. We consider $n$ consecutive vectors of the input sequence as the inputs for the
+$n$ copies, one for each, and the corresponding $n$ outputs generated as $n$ consecutive vectors of the output sequence, both sequences being ordered. We only
+consider the appropriate network at the appropriate timestep, one at a time, in the order of unfolding.
+</p>
+
+<p class="text">
+Using this simplification, it is possible to visualize the feedforward and backpropagation operations through each copy, as we had done earlier. The recurrent
+connections serve to provide additional inputs to its target network during the feedforward phase, and provide additional derivatives to its source network
+during the backpropagation phase. Of course, we must bear in mind that each copy in the unrolled structure represents a different time slice of the same
+network. Thus we accumulate the derivatives across copies before applying the same updates to all corresponding parameters. This is the essence of
+backpropagation through time, and the intuition underlying all Recurrent Neural Networks.
+</p>
+
+<p class="text">
+As exciting as the idea of recurrences may be, it makes training the network far more challenging. When dealing with multiple timesteps, the backpropagated
+gradients may become much too small, or much too large, far too quickly. These are lovingly known as vanishing, or exploding, gradients, but there is nothing
+nice about the way they complicate the convergence of the parameters. Usually, we are forced to use some form of truncated backpropagation, limiting the
+timesteps, or confined recurrences, limiting the number of affected neurons.
+</p>
+
+<p class="text">
+Long Short Term Memory networks pass information between timesteps using $3$ gates, called input, forget and output gates. The input gate decides how much of
+the input vector is accepted by the present cell state vector. The forget gate determines how much of the previous hidden vector is passed on to the present
+cell state vector. A combination of what makes its way through these can be used to determine the next hidden vector. The output gate controls how much of the
+present cell state vector is passed on as the current output vector of the network.
+</p>
+
+<p class="text">
+Let $x^t \in \Re^p$, $h^t, y^t \in \Re^q$ denote the input, hidden and output vectors at timestep $t$. Let $\mathcal{T}: \Re^p \to \Re^q$ be the input
+transfer function. Let $\mathcal{G}_\theta: \Re^p \to \Re^q$, where $\theta \in \{i, f, g\}$ be the input, forget and output gate functions. Any LSTM is built
+out of the equations $h^t = \mathcal{G}_i(x^t) \odot \mathcal{T}(x^t) + \mathcal{G}_f(x^t) \odot h^{t - 1}$, $y^t = \mathcal{G}_o(x^t) \odot \sigma_o(h^t)$,
+where $\sigma$s are nonlinearities. The most basic version uses $\mathcal{T}(x^t) = \sigma_\mathcal{T}(W_\mathcal{T} \cdot x^t + b_\mathcal{T})$,
+$\mathcal{G}_\theta(x^t) = \sigma_\theta(W_\theta \cdot x^t + b_\theta)$, where all $W$'s and $b$'s are weights and biases of the appropriate dimensions.
+Output feedback LSTMs consult their previous outputs: $\mathcal{T}(x^t) = \sigma(W_\mathcal{T} \cdot \begin{pmatrix} x^t \\ y^{t - 1} \end{pmatrix} +
+b_\mathcal{T})$, $\mathcal{G}_\theta(x^t) = \sigma_\theta(W_\theta \cdot \begin{pmatrix} x^t \\ y^{t - 1} \end{pmatrix} + b_\theta)$. Peephole LSTMs go even
+further and allow the gates to peep into the previous hidden state: $\mathcal{G}_\theta = \sigma_\theta(W_\theta \cdot \begin{pmatrix} x^t \\ y^{t - 1} \\ h^{t
+- 1} \end{pmatrix} + b_\theta)$.
+</p>
+
+<p class="text">
+Another popular variation of Recurrent Neural Networks are Gated Recurrent Units. They use $2$ gates, called reset and update gates. The update gate is
+equivalent to the LSTM output gate. The reset gate couples the input and forget gates, constraining them to satisfy $\mathcal{G}_i + \mathcal{G}_f = 1$.
+</p>
