@@ -1,0 +1,68 @@
+<p class="text">
+As far as I know, shallow neural networks are sometimes simply not good enough. Human beings are very adventurous, and ridiculously lazy - always finding more
+complicated challenges for computers to automate, and developing more ingenious tools to do so. We must go deeper, using more layers than we can count on
+our fingers, and more sophisticated layers than we have toyed with earlier. As a wise man once said, state of the art deep learning 'is akin to building a
+rocket ship. You need a huge engine and a lot of fuel. If you have a large engine and a tiny amount of fuel, you won’t make it to orbit. If you have a tiny
+engine and a ton of fuel, you can’t even lift off. To build a rocket you need a huge engine and a lot of fuel. The analogy to deep learning is that the rocket
+engine is the deep learning models and the fuel is the huge amounts of data we can feed to these algorithms.' Our primary focus here shall be on building
+better engines. We hope patrons shall pay for our fuel in due time.
+</p>
+
+<p class="text">
+At this point, one may be tempted to cite the universality theorem, stating that given enough hidden units, single hidden layer neural networks can approximate
+any arbitrary function to any desired accuracy. The mathematical proof is complex, but so exciting that we cannot not state the formal theorem. Let $\varphi$
+be any bounded, monotonically increasing, continuous function. Let $I_{m}$ represent the $m$-dimensional unit hypercube $[0, 1]^m$. Let $C(I_m)$ denote the set
+of continuous functions on $I_m$. Given any function $f \in C(I_m)$ and $\epsilon \gt 0\ \exists\ n \in \mathbb{N}, v_i, b_i \in \Re$ and $w_i \in \Re^m$, such
+that we may define $F(x) = \displaystyle\sum_{i = 1}^n v_i \varphi (w_i^T x_i + b_i)$ satisfying $|\ F(x) - f(x)\ |\ \lt \epsilon\ \forall\ x \in I_m$.
+</p>
+
+<p class="text">
+Brilliant, who needs deep learning anyway? We still do. But then, where was the catch? Given enough hidden units. How much is enough? Much too much. Why is it
+a problem? With obscenely many hidden units in between, the neural network must optimize an impossible number of parameters. There are not nearly as many
+training samples, and we run out of 'fuel' rather quickly. Deep architectures are able to represent the problems far more efficiently, and are able to
+generalize far more effectively.
+</p>
+
+<p class="text">
+But training deep networks is not without its hiccups. Complicated tasks operate of high dimensional data, and hence deep networks must exorcise the curse of
+dimensionality - that given too many criteria to base choices on, a model shall never see enough examples of all combinations to be able to form a general
+decision strategy. Models often exploit locality of samples in the input space to derive generalizations, using its parameters to partition the input space
+into regions and describe the shape of the output function in each. But local generalizaions are ineffective when applied to highly varying functions. The
+smoothness prior - that inputs 'close' to each other produce outputs 'close' to each other - makes sense for supervised learning, but does not help deep
+learning much, as it relies heavily on the unsupervised feature extraction. Vanishing and exploding gradients only make matters worse.
+</p>
+
+<p class="text">
+Deep learning models use a variety of transfer functions, both to better map to nonlinear manifolds, as well to to aid gradient descent. Each function
+$\mathcal{T}: \Re^n \to \Re^n$ applies a scalar transformation $\sigma: \Re \to \Re$ dimensionwise. The sigmoid looks like $\sigma(x) = \frac{1}{1 + e^{-x}}$,
+the hyperbolic tangent like $\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, the rectified linear unit like $\sigma(x) = \begin{cases} x & x >  0 \\ p \cdot x
+& otherwise \end{cases}$, the hard hyperbolic tangent like $\sigma(x) = \begin{cases} x & |x| < 1 \\ \frac{|x|}{x} & otherwise \end{cases}$, the hard shrink
+like $\sigma(x) = \begin{cases} x & |x| > p \\ 0 & otherwise \end{cases}$. The soft shrink looks like $\sigma(x) = \begin{cases} x - \frac{|x|}{x} & |x| < 1 \\
+0 & otherwise \end{cases}$, the soft plus like $\sigma(x) = \frac{1}{p} \cdot \log(1 + e^{p \cdot x})$, and the soft sign like $\sigma(x) = \frac{1}{1 + |x|}$.
+$p$ is a fixed parameter in each case.
+</p>
+
+<p class="text">
+Deep learning models must also guard against overfitting - where the network learns desired outputs for the training data unnecessarily well, fitting even the
+noise, and fails to generalize to unseen samples. One method to achieve this is by regularization. This adds a norm of the parameters to the cost being
+optimized, to prevent the them from growing unnecessarily to accommodate small variations. If the parameters be $\theta_i$, then $\mathcal{L}_1$ regularization
+adds $\lambda \cdot \sum_i |\theta_i|$ to the cost, whereas $\mathcal{L}_2$ regularization adds $\lambda \cdot \sum_i \theta_i^2$. Sparse representations add a
+penalty $\lambda \cdot \sum_i |a_i|$, for the activation of the neurons $a_i$. $\lambda$ is a fixed parameter in each case.
+</p>
+
+<p class="text">
+It is standard practice to divide the dataset into training, validation, and testing sets. The training set is used to tune the parameters by backpropagation.
+The validation set is used to tune the hyperparameters during training, and indicates the error on unseen samples. Since we select the network resulting in the
+lowest validation error, it would be questionable to present this as our final result. The testing set measures the error on generalizing to arbitrary input
+data. How many times may one safely iterate over the training set? Early stopping may be used - which trains until the validation error begins to rise.
+</p>
+
+<p class="text">
+The dataset is often simply not large enough. In such cases one may resort to dataset augmentation, generating new samples from the existing data, by adding
+noise with infinitesimal variance to the inputs. In fact, the introduction of noise serves as a strong regularizer - one may consider adding it to the inputs,
+activations, parameters, or outputs, with intriguing results in each case. Sometimes, bagging or other ensemble methods are used, where a number of distinct
+networks are trained, and their predictions averaged to generate results on the testing set. Averaging works because different models will usually not make the
+same errors on the testing set. Dropout combines the ideas, training an ensemble consisting of all subnetworks that can be constructed by removing nonoutput
+units from an underlying base network. During training, for each sample, each neuron has a probability $p$ of being connected in the network. The decision is
+made while feeding forward, and adhered to during backpropagation. During testing, each neuron generates only a fraction $p$ of its activation as its output.
+</p>
