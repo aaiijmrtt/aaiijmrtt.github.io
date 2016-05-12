@@ -1,0 +1,58 @@
+<p class="text">
+As far as I know, deep learning methods aim at extracting feature hierarchies, higher level features being built out of lower level ones. Automatically
+extracting features at multiple levels of abstraction allows a system to learn complex functions mapping the inputs to the outputs directly from data, without
+having to depend on human-crafted features. Higher-level abstractions are especially difficult to specify explicitly in terms of raw sensory input. Natural
+neural networks, the ones we were born with, do not use mutually exclusive features, but rather seem to develop distributed representations where information
+is not localized at particular neurons. Further, these tend to be sparse, only a small fraction of all neurons being active at any given time. These
+observations inspire some of the most successful artificial models used nowadays.
+</p>
+
+<p class="text">
+Autoencoders are trained to copy their inputs to their outputs. Internally, the network may be divided into two parts - the encoder function $f: \Re^p \to
+\Re^q$, mapping the input to the hidden layer, and the reconstruction function $g: \Re^q \to \Re^p$, mapping the hidden to the output layer. We are not too
+interested in the output of the network $g(f(x)) \approx x$, but rather in the code learned by the hidden layer $h = f(x)$, which can be used to represent the
+input. The most common variety of autoencoders are undercomplete, ie. $p \gt q$. In training it to copy the input to the output through a lower dimensional
+space, we hope it will learn the principal subspace of the training data. The nonlinearities allow autoencoders to learn more powerful generalizations than
+principal components analysis.
+</p>
+
+<p class="text">
+The representations learnt by overcomplete autoencoders are of use too, but only if they are constrained to learn nontrivial mappings, by using a loss function
+which encourages properties such as sparseness of representation, immunity to small changes in input, robustness to noise or missing input, and so on. Sparse
+autoencoders add a penalty $\sum_i |h_i|$ to the cost being optimized $|x, g(f(x))|$, which can be thought of as a regularizer on the activations of the hidden
+layer. Contractive autoencoders add a penalty on the derivative of the hidden representation $\sum_i |\nabla_x h_i|^2$. Denoising autoencoders attempt to learn
+to reconstruct the data $x$ from noisy. corrupted input $\hat{x}$, by optimizing the cost $|x, g(f(\hat{x}))|$. Deep autoencoders are also common, greedily
+pretrained by stacking nested encoder-decoder pairs inwards.
+</p>
+
+<p class="text">
+Modern autoencoders generalize the idea beyond deterministic functions to stochastic mappings. The encoder generalizes from a function to a distribution
+$p_\mathcal{E}(h | x)$, as does the decoder $p_\mathcal{D}(x | h)$. They are trainined to maximize the probability of the training data, rather than to copy
+the input to the output. The most exciting of these are based on the boltzmann machines, which we define over inputs $x \in \{0, 1\}^p$ using the energy
+function $-E(x) = x^T \cdot W \cdot x + b^T \cdot x$, to yield the probability distribution $p(x) = \frac{1}{Z} e^{-E(x)}$, where $W, b$ are weights and
+biases, and $Z$ is the partition function ensuring that $\sum_x p(x) = 1$.
+</p>
+
+<p class="text">
+When all the units are not observed, the latent variables behave like the hidden units in a multilayer perceptron and model higher order interactions between
+visible units, making the boltzmann machine a universal approximator of probability mass functions over discrete variables. The inputs $x$ are decomposed into
+visible $v \in \{0, 1\}^{n_v}$ and latent $h \in \{0, 1\}^{n_h}$ units. The restricted boltzmann machine is one of the most common building blocks of deep
+probabilistic models. Its energy function $-E(v, h) = v^T \cdot W \cdot h + b^T \cdot v + c^T \cdot h$ defines the joint probability distribution $p(v, h) =
+\frac{1}{Z} e^{-E(v, h)}$ where $Z = \sum_v \sum_h e^{-E(v, h)}$. The computation of the partition function is, unfortunately, intractable. So we must find a
+clever workaround to evaluate the expression. It is possible to derive, after a little effort and a lot of coffee, $p(h_i = 1 | v) = \sigma(v^T \cdot W + c)_i$
+yielding $p(h | v) = \displaystyle\prod_{i = 1}^{n_h} \sigma((2 \cdot h - 1) \odot (W^T \cdot v + c))_i$ and $p(v | h) = \displaystyle\prod_{i = 1}^{n_v}
+\sigma((2 \cdot v - 1) \odot (W \cdot h + b))_i$, where $\sigma$ is the sigmoid function. Now that looks familiar.
+</p>
+
+<p class="text">
+Training via gradient descent still presents challenges. We would like to minimize the negative log likelihood of the probability distribution $\sum_i -\log
+p(v_i)$ over the samples $\{v_i\}$. The gradient with respect to the parameters $\theta$ looks like $\nabla_\theta -\log p(v_i) = \mathbb{E}_h [\nabla_\theta
+E(v_i, h) | v_i] - \mathbb{E}_{h, v} [\nabla_\theta E(v, h)]$, where $\mathbb{E}$s are expectations, and $E$s are energy functions. To make life easier, we
+replace these expectations with point estimates obtained from $k$ steps of Gibb's samlping initialized at the sample point $\mathbb{E}_h [\nabla_\theta E(v_i,
+h) | v_i] \approx \nabla_\theta E(v_i, h_i)$ and $\mathbb{E}_{h, v} [\nabla_\theta E(v, h)] \approx \nabla_\theta E(\hat{v}, \hat{h})$. This is the heart of
+contrastive divergence, where $\hat{v_i} = v_i^k$ and $\hat{h_i} = h_i^k$ are given by the markov chains $h_i^k \sim \sigma(W^T \cdot v_i^{k - 1} + c)$, $v_i^k
+\sim \sigma(W \cdot h_i^k + b)$ with $v_i^0 = v_i$. A bit of back of the envelope scribbling and top of the head scratching will give us $\nabla_b E(v, h) =
+-h(v)$, $\nabla_c E(v, h) = -v$ and $\nabla_W E(v, h) = -h(v) \cdot v^T$, with $h(v) \sim \sigma(W^T \cdot v + c)$. And behold, we have what looks
+mathematically like a feedforward network with a linear layer followed by a sigmoidal nonlinearity, with the added stochastic sampling. Deep belief networks,
+essentially stacked RBMs, take things further with several layers of latent variables. They can be greedily pretrained layerwise.
+</p>
