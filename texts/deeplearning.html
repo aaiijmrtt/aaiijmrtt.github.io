@@ -24,30 +24,30 @@ generalize far more effectively.
 </p>
 
 <p class="text">
-But training deep networks is not without its hiccups. Complicated tasks operate of high dimensional data, and hence deep networks must exorcise the curse of
+But training deep networks is not without its hiccups. Complicated tasks operate on high dimensional data, and hence deep networks must exorcise the curse of
 dimensionality - that given too many criteria to base choices on, a model shall never see enough examples of all combinations to be able to form a general
 decision strategy. Models often exploit locality of samples in the input space to derive generalizations, using its parameters to partition the input space
 into regions and describe the shape of the output function in each. But local generalizaions are ineffective when applied to highly varying functions. The
 smoothness prior - that inputs 'close' to each other produce outputs 'close' to each other - makes sense for supervised learning, but does not help deep
-learning much, as it relies heavily on the unsupervised feature extraction. Vanishing and exploding gradients only make matters worse.
+learning much, as it relies heavily on unsupervised feature extraction. Vanishing and exploding gradients only make matters worse.
 </p>
 
 <p class="text">
-Deep learning models use a variety of transfer functions, both to better map to nonlinear manifolds, as well to to aid gradient descent. Each function
+Deep learning models use a variety of transfer functions, both to better map to nonlinear manifolds, as well as to aid gradient descent. Each function
 $\mathcal{T}: \Re^n \to \Re^n$ applies a scalar transformation $\sigma: \Re \to \Re$ dimensionwise. The sigmoid looks like $\sigma(x) = \frac{1}{1 + e^{-x}}$,
 the hyperbolic tangent like $\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, the rectified linear unit like $\sigma(x) = \begin{cases} x & x >  0 \\ p \cdot x
 & otherwise \end{cases}$, the hard hyperbolic tangent like $\sigma(x) = \begin{cases} x & |x| < 1 \\ \frac{|x|}{x} & otherwise \end{cases}$, the hard shrink
-like $\sigma(x) = \begin{cases} x & |x| > p \\ 0 & otherwise \end{cases}$. The soft shrink looks like $\sigma(x) = \begin{cases} x - \frac{|x|}{x} & |x| < 1 \\
-0 & otherwise \end{cases}$, the soft plus like $\sigma(x) = \frac{1}{p} \cdot \log(1 + e^{p \cdot x})$, and the soft sign like $\sigma(x) = \frac{1}{1 + |x|}$.
-$p$ is a fixed parameter in each case.
+like $\sigma(x) = \begin{cases} x & |x| > p \\ 0 & otherwise \end{cases}$, the soft shrink like $\sigma(x) = \begin{cases} x - \frac{|x|}{x} & |x| < 1 \\ 0 &
+otherwise \end{cases}$, the soft plus like $\sigma(x) = \frac{1}{p} \cdot \log(1 + e^{p \cdot x})$, and the soft sign like $\sigma(x) = \frac{1}{1 + |x|}$. $p$
+is a fixed parameter in each case.
 </p>
 
 <p class="text">
 Deep learning models must also guard against overfitting - where the network learns desired outputs for the training data unnecessarily well, fitting even the
 noise, and fails to generalize to unseen samples. One method to achieve this is by regularization. This adds a norm of the parameters to the cost being
-optimized, to prevent the them from growing unnecessarily to accommodate small variations. If the parameters be $\theta_i$, then $\mathcal{L}_1$ regularization
-adds $\lambda \cdot \sum_i |\theta_i|$ to the cost, whereas $\mathcal{L}_2$ regularization adds $\lambda \cdot \sum_i \theta_i^2$. Sparse representations add a
-penalty $\lambda \cdot \sum_i |a_i|$, for the activation of the neurons $a_i$. $\lambda$ is a fixed parameter in each case.
+optimized, to prevent the them from growing unnecessarily to accommodate small variations. If the parameters be $\theta_i$, then $\mathcal{L}_1(\theta)$
+regularization adds $\lambda \cdot \sum_i |\theta_i|$ to the cost, whereas $\mathcal{L}_2(\theta)$ regularization adds $\lambda \cdot \sum_i \theta_i^2$.
+Sparse representations add a penalty $\lambda \cdot \sum_i |a_i|$, for the activation of the neurons $a_i$. $\lambda$ is a fixed parameter in each case.
 </p>
 
 <p class="text">

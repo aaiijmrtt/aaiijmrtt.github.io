@@ -21,7 +21,7 @@ The representations learnt by overcomplete autoencoders are of use too, but only
 which encourages properties such as sparseness of representation, immunity to small changes in input, robustness to noise or missing input, and so on. Sparse
 autoencoders add a penalty $\sum_i |h_i|$ to the cost being optimized $|x, g(f(x))|$, which can be thought of as a regularizer on the activations of the hidden
 layer. Contractive autoencoders add a penalty on the derivative of the hidden representation $\sum_i |\nabla_x h_i|^2$. Denoising autoencoders attempt to learn
-to reconstruct the data $x$ from noisy. corrupted input $\hat{x}$, by optimizing the cost $|x, g(f(\hat{x}))|$. Deep autoencoders are also common, greedily
+to reconstruct the data $x$ from noisy, corrupted input $\hat{x}$, by optimizing the cost $|x, g(f(\hat{x}))|$. Deep autoencoders are also common, greedily
 pretrained by stacking nested encoder-decoder pairs inwards.
 </p>
 
@@ -38,7 +38,7 @@ When all the units are not observed, the latent variables behave like the hidden
 visible units, making the boltzmann machine a universal approximator of probability mass functions over discrete variables. The inputs $x$ are decomposed into
 visible $v \in \{0, 1\}^{n_v}$ and latent $h \in \{0, 1\}^{n_h}$ units. The restricted boltzmann machine is one of the most common building blocks of deep
 probabilistic models. Its energy function $-E(v, h) = v^T \cdot W \cdot h + b^T \cdot v + c^T \cdot h$ defines the joint probability distribution $p(v, h) =
-\frac{1}{Z} e^{-E(v, h)}$ where $Z = \sum_v \sum_h e^{-E(v, h)}$. The computation of the partition function is, unfortunately, intractable. So we must find a
+\frac{1}{Z} e^{-E(v, h)}$ where $Z = \sum_v \sum_h e^{-E(v, h)}$. The computation of the partition function is, unfortunately, intractable, so we must find a
 clever workaround to evaluate the expression. It is possible to derive, after a little effort and a lot of coffee, $p(h_i = 1 | v) = \sigma(v^T \cdot W + c)_i$
 yielding $p(h | v) = \displaystyle\prod_{i = 1}^{n_h} \sigma((2 \cdot h - 1) \odot (W^T \cdot v + c))_i$ and $p(v | h) = \displaystyle\prod_{i = 1}^{n_v}
 \sigma((2 \cdot v - 1) \odot (W \cdot h + b))_i$, where $\sigma$ is the sigmoid function. Now that looks familiar.
@@ -48,11 +48,11 @@ yielding $p(h | v) = \displaystyle\prod_{i = 1}^{n_h} \sigma((2 \cdot h - 1) \od
 Training via gradient descent still presents challenges. We would like to minimize the negative log likelihood of the probability distribution $\sum_i -\log
 p(v_i)$ over the samples $\{v_i\}$. The gradient with respect to the parameters $\theta$ looks like $\nabla_\theta -\log p(v_i) = \mathbb{E}_h [\nabla_\theta
 E(v_i, h) | v_i] - \mathbb{E}_{h, v} [\nabla_\theta E(v, h)]$, where $\mathbb{E}$s are expectations, and $E$s are energy functions. To make life easier, we
-replace these expectations with point estimates obtained from $k$ steps of Gibb's samlping initialized at the sample point $\mathbb{E}_h [\nabla_\theta E(v_i,
-h) | v_i] \approx \nabla_\theta E(v_i, h_i)$ and $\mathbb{E}_{h, v} [\nabla_\theta E(v, h)] \approx \nabla_\theta E(\hat{v}, \hat{h})$. This is the heart of
-contrastive divergence, where $\hat{v_i} = v_i^k$ and $\hat{h_i} = h_i^k$ are given by the markov chains $h_i^k \sim \sigma(W^T \cdot v_i^{k - 1} + c)$, $v_i^k
-\sim \sigma(W \cdot h_i^k + b)$ with $v_i^0 = v_i$. A bit of back of the envelope scribbling and top of the head scratching will give us $\nabla_b E(v, h) =
--h(v)$, $\nabla_c E(v, h) = -v$ and $\nabla_W E(v, h) = -h(v) \cdot v^T$, with $h(v) \sim \sigma(W^T \cdot v + c)$. And behold, we have what looks
-mathematically like a feedforward network with a linear layer followed by a sigmoidal nonlinearity, with the added stochastic sampling. Deep belief networks,
-essentially stacked RBMs, take things further with several layers of latent variables. They can be greedily pretrained layerwise.
+replace these expectations with point estimates obtained from $k \in \mathbb{N}$ steps of Gibb's samlping initialized at the sample point $\mathbb{E}_h
+[\nabla_\theta E(v_i, h) | v_i] \approx \nabla_\theta E(v_i, h_i)$ and $\mathbb{E}_{h, v} [\nabla_\theta E(v, h)] \approx \nabla_\theta E(\hat{v_i}, \hat{h_i})
+$. This is the heart of contrastive divergence, where $\hat{v_i} = v_i^k$ and $\hat{h_i} = h_i^k$ are given by the markov chains $h_i^k \sim \sigma(W^T \cdot
+v_i^{k - 1} + c)$, $v_i^k \sim \sigma(W \cdot h_i^k + b)$ with $v_i^0 = v_i$. A bit of back of the envelope scribbling and top of the head scratching will give
+us $\nabla_b E(v, h) = -h(v)$, $\nabla_c E(v, h) = -v$ and $\nabla_W E(v, h) = -h(v) \cdot v^T$, with $h(v) \sim \sigma(W^T \cdot v + c)$. And behold, we have
+what looks mathematically like a feedforward network with a linear layer followed by a sigmoidal nonlinearity, with the added stochastic sampling. Deep belief
+networks, essentially stacked RBMs, take things further with several layers of latent variables. They can be greedily pretrained layerwise.
 </p>

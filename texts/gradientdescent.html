@@ -17,10 +17,10 @@ measure our steps with time, over and above simply following the lay of the land
 
 <p class="text">
 If we take long steps, would we jump across valleys we would otherwise have liked to descend into? If we take short steps, would we remain stuck in a wayside
-ditch we could otherwise have climbed out of? Perhaps. Perhaps not. The best we can do is to guess: when we started on our quest, we were probably a long way
+ditch we could otherwise have climbed out of? Perhaps. Perhaps not. The best we can do is to guess - when we started on our quest, we were probably a long way
 off from our target and hence should have taken long steps, shortening them as we near our goal so as not to overshoot. This spirit is captured by the steps
 $\frac{\alpha}{\beta^t} \cdot \delta^t$, where $\beta^t = 1 + \tau \cdot t$ for decay, $(\beta^t)^2 = (\beta^{t - 1})^2 + (\delta^t)^2$ for adaptive gradients,
-$(\beta^t)^2 = \mu(\beta^{t - 1})^2 + (1 - \mu) \cdot (\delta^t)^2 $ for root mean square propagation.
+$(\beta^t)^2 = \mu \cdot (\beta^{t - 1})^2 + (1 - \mu) \cdot (\delta^t)^2 $ for root mean square propagation.
 </p>
 
 <p class="text">
@@ -29,12 +29,12 @@ the direction that didn't look promising, wouldn't our confidence shrink? This i
 $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot
 \delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise \\ \end{cases}$ for adaptive gain, $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i \cdot (1 + \Delta), &
 \delta^t_{i} \cdot \delta^{t - 1}_{i} &gt 0\\ \gamma^{t - 1}_i \cdot (1 - \Delta), & \delta^t_{i} \cdot \delta^{t - 1}_{i} &lt 0\\ \gamma^{t - 1}_i, & otherwise\\
-\end{cases}$ for bar delta bar. Resilient propagation goes as far as to take steps solely based on confidence, without worrying about how steep the terrain is:
-it steps as $\alpha \cdot \gamma^t \odot sgn(\delta^t)$.
+\end{cases}$ for bar delta bar. Resilient propagation goes as far as to take steps solely based on confidence, without worrying about how steep the terrain is
+- it steps as $\alpha \cdot \gamma^t \odot sgn(\delta^t)$.
 </p>
 
 <p class="text">
-If we had been travelling in one direction for a while, would we develop a fondness for that direction, and ignore minor permonitory bumps along the way? This
+If we had been travelling in one direction for a while, would we develop a fondness for that direction, and ignore minor premonitory bumps along the way? This
 thought is captured by the concept of momentum, which replaces the steps by a speed, $\theta^{t + 1} \leftarrow \theta^t - v^t$ where $v^t = \gamma \cdot v^{t
 - 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$.
 </p>
@@ -43,7 +43,8 @@ thought is captured by the concept of momentum, which replaces the steps by a sp
 What about the terrain in the first place? Where did it come from? Can it be sculpted or moulded? The answer lies in the nature of the network, the
 cost function, and their interaction with the dataset. A few of the common cost functions $|f_{\theta}(x), y|$ are the mean squared $(f_{\theta}(x)  - y) \cdot
 (f_{\theta}(x)  - y)$, the cross entropy $-(y \cdot \ln(f_{\theta}(x)) + (1 - y) \cdot \ln(1 - f_{\theta}(x)))$, the negative log likelihood $-y \cdot \ln(
-f_{\theta}(x))$, the divergence $y \cdot (\ln(y) - \ln(f_{\theta}(x)))$ and the cosine distance $\frac{f_{\theta}(x)}{|f_{\theta}(x)|} \cdot \frac{y}{|y|}$.
+f_{\theta}(x))$, the Kullback Leibler divergence $y \cdot (\ln(y) - \ln(f_{\theta}(x)))$ and the cosine distance $\frac{f_{\theta}(x)}{|f_{\theta}(x)|} \cdot
+\frac{y}{|y|}$.
 </p>
 
 <p class="text">
