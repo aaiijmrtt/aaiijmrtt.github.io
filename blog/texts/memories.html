@@ -1,0 +1,29 @@
+<p class="text">
+As far as I know, humans and programs alike are capable of storing data. Neural networks should be able to do the same. One may argue that recurrent networks,
+through their internal states, encode all the data they have been exposed to so far. However, the task of accurately storing and recalling long sequences
+merely from a fixed length encoding is far from trivial. Neural networks should also be supplied with the ability to look up data from an auxiliary data
+structure. Neural networks augmented with memory are called memory networks. The network is itself trained to read and write to its long-term storage, and may
+use these memories at the time of inference.
+</p>
+
+<p class="text">
+A memory network broadly consists of $4$ components: $\matcal{I}, \mathcal{G}, \mathcal{O}, \mathcal{R}$. $\mathcal{I}$ maps an input, $x$, into an internal
+feature representation, $\mathcal{I}(x)$. $\mathcal{G}$ generalizes the new input by assimilating it and updating its memories, $M_i = \mathcal{G}(M,
+\mathcal{I}(x), M_i)$. $\mathcal{O}$ generates an output feature, $o = \mathcal{O}(M, \mathcal{I}(x))$, from its input and memory. $\mathcal{R}$ generates the
+final response, $r = \mathcal{R}(o)$, from the output features. The exact nature and implementation of these components can be wide and varied.
+</p>
+
+<p class="text">
+Another interesting, related concept is that of attention. It is especially common in the encoder-decoder models we discussed while exploring recurrences. The
+decoder is allowed access to all the internal states of the encoder, $h_E^t$, which serves as a form of memory, $M = \begin{pmatrix} h_E^0 ... h_E^t ...
+\end{pmatrix}$ during inference. However, to effectively utilize this additional information instead of becoming further confused, the network needs to focus
+its attention on appropriately relevant portions of its memory.
+</p>
+
+<p class="text">
+While hard attention models are not end to end differentiable, and gradient descent based optimization methods do not apply, soft attention models can be
+trained end to end. During every decoding step, $t$, the memories are converted into a context vector, $c^t$, which is essentially a mean of the memories,
+$c^t = M \cdot {a^t}^T$, weighted by an attention vector, $a^t$. The attention vector is obtained by a softmax, $S(x)_i = \frac{\exp{x_i}}{\sum_i\exp{x_i}}$,
+of some similarity measure between the decoder hidden state, $h_D^t$, and the memories $M$. It may be a simple cosine similarity, $a^t = S({h_D^t}^T \cdot M)$,
+or even a fairly complicated model such as an affine bilinear similarity measure, $a^t = S({h_D^t}^T \cdot W \cdot M + b)$.
+</p>

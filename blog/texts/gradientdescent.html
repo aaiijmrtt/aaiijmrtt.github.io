@@ -36,7 +36,8 @@ $\gamma^t_i = \begin{cases} \gamma^{t - 1}_i + \Delta, & \delta^t_{i} \cdot \del
 <p class="text">
 If we had been travelling in one direction for a while, would we develop a fondness for that direction, and ignore minor premonitory bumps along the way? This
 thought is captured by the concept of momentum, which replaces the steps by a speed, $\theta^{t + 1} \leftarrow \theta^t - v^t$ where $v^t = \gamma \cdot v^{t
-- 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$.
+- 1} + \alpha \cdot \nabla^t_{\theta^t}|f_{\theta^t}(x), y|$. Of course, sometimes it is possible to grow much too fond of a particular direction. It is best
+to clip the gradients to remain in a reasonable range, $[-\Delta, \Delta]$.
 </p>
 
 <p class="text">

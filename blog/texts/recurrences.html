@@ -53,3 +53,23 @@ further and allow the gates to peep into the previous hidden state: $\mathcal{G}
 Another popular variation of recurrent neural networks are gated recurrent units. They use $2$ gates, called reset and update gates. The update gate is
 equivalent to the LSTM output gate. The reset gate couples the input and forget gates, constraining them to satisfy $\mathcal{G}_i + \mathcal{G}_f = 1$.
 </p>
+
+<p class="text">
+Yet another class of models are bidirectional. They generally consist of two recurrent networks: one making a forward pass and the other making a backward pass
+through the input sequence. The hidden state at any input token is a combination, usually the concatenation, of the forward and backward pass at that token.
+Given an input sequence $x^t$, the hidden vector of the forward model is mathematically expressed as $\overrightarrow{h^t} = \overrightarrow{f}(x^t,
+\overrightarrow{h^{t - 1}})$, while that of the backward model is mathematically expressed as $\overleftarrow{h^t} = \overleftarrow{f}(x^{t},
+\overleftarrow{h^{t + 1}})$. Taken together, the hidden vector of the bidirectional recurrent neural network at timestep $t$, looks like $\begin{pmatrix}
+\overleftarrow{h^t} \\ \overrightarrow{h^t} \end{pmatrix}$. These models better capture information from the entire sequence, while maintaining maximum
+emphasis on the nearest token, $x^t$.
+</p>
+
+<p class="text">
+So far we have dabbled with encoding a sequence into a fixed length state vector. These vectors can then be run through any standard neural network model for
+classification and regression, overall learning a map from a sequence to an output vector. But what if the output is a sequence as well: how does one map from
+one sequence to another? A standard framework for such problems is an Encoder-Decoder network. The Encoder is recurrent model which maps the input sequence
+into a fixed length feature vector. The Decoder is another recurrent model which maps the internal feature representation to an output sequence. Generation of
+the output sequence continues until the model predicts a predetermined end-of-sequence symbol. The generation is usually greedy, feeding the output of the
+previous time step as the input of the next. However, this means that bad predictions leads to worse predictions. The cumulative effect of a bad choice can be
+mitigated by performing a beam search.
+</p>

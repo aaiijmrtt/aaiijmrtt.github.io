@@ -1,6 +1,6 @@
 var texts = ['chessengines', 'minimax', 'alphabetapruning',
-	'neuralnetworks', 'gradientdescent', 'backpropagation', 'recurrences',
-	'deeplearning', 'convolutions', 'wordvectors', 'abstractions'];
+	'neuralnetworks', 'gradientdescent', 'backpropagation', 'recurrences', 'memories',
+	'deeplearning', 'convolutions', 'wordvectors', 'abstractions', 'programming'];
 var backgrounds = ['background2.jpeg', 'background3.jpeg', 'background4.jpeg', 'background5.jpg', 'background6.jpeg', 'background1.jpeg'];
 
 var backindex = 0;

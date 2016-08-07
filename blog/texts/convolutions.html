@@ -3,7 +3,8 @@ As far as I know, neural networks cannot see things the way we do. We unconsicio
 task for a computer. Digital representations of images may be common, but extracting the underlying ideas from the encodings is far from trivial. This becomes
 especially tricky because the quality of images increases with resolution, resulting in a corresponding increase in the dimensionality of the vectors used,
 leaving the model with an unhealthy number of parameters to optimize. But images are highly spatially coherent. Is there no way to utilize the underlying
-structural interdependencies between contiguous points to tackle the task of their processing? There is - convolutions.
+structural interdependencies between contiguous points to tackle the task of their processing? There is - convolutions. Exactly as recurrent neural networks
+shared weights across time, convolutional neural networks share weights across space.
 </p>
 
 <p class="text">
@@ -37,7 +38,8 @@ like $y_{i_0, j_0} = \displaystyle\sum_{i = 1}^m \displaystyle\sum_{j = 1}^n w_{
 The convolution layer is usually followed by a pooling layer. This aggregates the information extracted by the kernel from adjacent patches, usually by taking
 the minimum, maximum or average. The patches used in pooling slide over the result of the convolution, but do not overlap, ie. $s \geq max(m, n)$.
 Mathematically, they look like $z_{i_0, j_0} = \underset{i, j}{\text{pool}}\ y_{f(i, i_0), f(j, j_0)}$, where $\text{pool} \in \{\text{min}, \text{max}, \text{
-avg}\}$. This is often followed or preceded by a non-linear layer in practice.
+avg}\}$. This is often followed or preceded by a non-linear layer in practice. Pooling does not add to the number of parameters, but rather to the
+hyperparameters size and stride. It is less aggressive than an unpooled convolution with a longer stride, with largely the same effect.
 </p>
 
 <p class="text">
