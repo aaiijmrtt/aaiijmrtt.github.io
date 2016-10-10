@@ -7,10 +7,23 @@ use these memories at the time of inference.
 </p>
 
 <p class="text">
-A memory network broadly consists of $4$ components: $\matcal{I}, \mathcal{G}, \mathcal{O}, \mathcal{R}$. $\mathcal{I}$ maps an input, $x$, into an internal
+A memory network broadly consists of $4$ components: $\mathcal{I}, \mathcal{G}, \mathcal{O}, \mathcal{R}$. $\mathcal{I}$ maps an input, $x$, into an internal
 feature representation, $\mathcal{I}(x)$. $\mathcal{G}$ generalizes the new input by assimilating it and updating its memories, $M_i = \mathcal{G}(M,
 \mathcal{I}(x), M_i)$. $\mathcal{O}$ generates an output feature, $o = \mathcal{O}(M, \mathcal{I}(x))$, from its input and memory. $\mathcal{R}$ generates the
 final response, $r = \mathcal{R}(o)$, from the output features. The exact nature and implementation of these components can be wide and varied.
+</p>
+
+<p class="text">
+$\mathcal{I}$ may preprocess the text, or may simply project words into a feature space, transforming them into word vectors. $\mathcal{G}$, in its simplest
+form, finds a slot in memory in which to put the input, often in the first available empty slot. The larger the capacity of memory, the more information the
+network can store. However, more information slows down $\mathcal{O}$ and $\mathcal{R}$, and hence $\mathcal{G}$ may implement a method of updating relevant
+existing memories, or forgetting irrelevant ones in a finite memory buffer. For even larger knowledge bases, memories may be grouped by category, allowing
+recollections of only a smaller subset. $\mathcal{O}$ can generate a sequence of output feature vectors by referring to the most similar memories $o_n =
+\mathcal{O}(\mathcal{I}(x), m) = \underset{i \in \mathbb{N}_{\leq |M|}}{\text{argmax}} s_{\mathcal{O}}((\mathcal{I}(x), (o_1 ... o_{n - 1})), m_i)$. Using
+these, the response may be generated as a sentence using a recurrent neural network, or as a similar word from the vocabulary $V$, $r = \underset{w \in V}{
+\text{argmax}} s_{\mathcal{R}}((\mathcal{I}(x), (o_1 ... o_n)), w)$. The number of supporting memories to be used, $n$, may be predetermined, or memories may
+be generated until a designated end-of-sequence terminator is predicted. The nature of the similarity functions $s_{\mathcal{O}}$ and $s_{\mathcal{R}}$ may
+vary.
 </p>
 
 <p class="text">
